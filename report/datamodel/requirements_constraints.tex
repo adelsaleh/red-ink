@@ -1,0 +1,20 @@
+\documentclass[11pt]{article}
+
+\usepackage{parskip}
+
+\begin{document}
+
+For a given $d$ that represents the radius of scanning, the number of words in
+the word cloud is maximum $2d$ words.
+
+$$ \forall c \in Clouds, w \in NonLocation \; || \{ w \; | \; w \in NonLocation
+\; \wedge \; cloud.contains(w) \} || \leq 2d$$
+
+If a word describes a location then it must be contained in the word cloud of
+that location
+
+$$ \forall word \in NonLocation, location \in Location $$
+   $$ (word, location) \in describes \; \Leftrightarrow \;
+   (word, has(location)) \in contains $$
+
+\end{document}
