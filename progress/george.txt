@@ -2,3 +2,5 @@
 -Created data model
 -Helped create use cases
 -Created a program that takes UML files and outputs JAVA classes
+-Helped with UML
+-Drew MDD

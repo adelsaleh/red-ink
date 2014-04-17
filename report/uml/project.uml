@@ -1,0 +1,57 @@
+class WordCloud
++ WordCloud(String location, Map<Word, Integer> histogram)
++ String getImageURL()
+- String location
+- Map<Word, Integer> histogram
+
+class Geolocation
++s Location getLocation(double lat, double log)
++s Location getLocation(String locationName)
+
+class Location
+- double lat
+- double log
+- String locationName
+- WordCloud wordcloud
++ Location(String locationName, double lat, double log)
++ WordCloud generateWordCloud(Novel n, Word location, int radius)
++ double getLatitude()
++ double getLongitude()
++ String getLocationName()
++ WordCloud getWordCloud()
+
+class Word
+- String word
+- int offset
+- ETag tag
++ Word(String word, int offset)
++ Word(String word)
++ String getWord()
++ int getOffset()
++ Etag getTag()
+
+class Novel
+- Word[] words
+- String filename
++ Novel(String path)
++ Word[] getSurroundingWords(Word w, int radius)
++ Word[] getSurroundingWords(int offset, int radius)
+
+class LocationExtractor
+- Novel novel
++ LocationExtractor(Novel n)
++ Iterator<Location> locationIterator()
++ boolean isLocation(Word w)
+
+class DescriptorFetcher
+- Etag[] allowedTags
++ DescriptorFetcher(Etag[] allowedTags)
++ boolean isUseful(Word word)
++ Iterator<Word> getUsefulWords(Word[] sentence)
++ Map<Word, Integer> getUsefulWordsAsHistogram(Word[] sentence)
+
+class Map
+- ArrayList<Location> pins
++ Map()
++ void addPin(Location l)
++ String toHTML()

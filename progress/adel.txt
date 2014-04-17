@@ -1,2 +1,0 @@
--- Week 1 
--Created data model
