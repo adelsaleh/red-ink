@@ -1,0 +1,81 @@
+\documentclass[21pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{parskip}
+\pagenumbering{gobble}
+
+\title{UML Use Cases}
+\date{}
+
+\begin{document}
+
+\maketitle
+\section{Actors}
+\begin{enumerate}
+\item Researcher
+\end{enumerate}
+
+\section{Parsing}
+\subsection{Participating Actor}
+\begin{enumerate}
+\item Researcher
+\end{enumerate}
+\subsection{Entry Conditions}
+\begin{enumerate}
+\item The researcher has given the novel as an input to the program in a format that is supported by the program
+\item The researcher has provided a search radius in which she wishes to find descriptors of locations
+\end{enumerate}
+
+\subsection{Exit Condition}
+\begin{enumerate}
+\item Retrieve all the locations with their appropriate descriptors
+\end{enumerate}
+
+\subsection{Flow of events}
+\begin{enumerate}
+\item Parse the novel to get the locations.
+\item $\forall$ locations found, use the radius provided as input to search for meaningful words that describe said location
+\end{enumerate}
+
+\section{Display map}
+\subsection{Participating Actor}
+\begin{enumerate}
+\item Researcher
+\end{enumerate}
+\subsection{Entry Conditions}
+\begin{enumerate}
+\item Parsing exit condition has been satisfied
+\end{enumerate}
+\subsection{Exit Conditions}
+\begin{enumerate}
+\item Display a map containing all of the locations that the parsing has yield
+\end{enumerate}
+\subsection{Flow of Events}
+\begin{enumerate}
+\item $\forall$ locations apply a reverse geolocation algorithm to compute the coordinates of said location
+\item Use these coordinates to create labels on a map.
+\end{enumerate}
+
+
+\section{Display wordcloud}
+\subsection{Participating Actor}
+\begin{enumerate}
+\item Researcher
+\end{enumerate}
+\subsection{Entry Conditions}
+\begin{enumerate}
+\item Display map exit condition has been satisfied
+\item The user clicked on a label representing a location
+\end{enumerate}
+\subsection{Exit Conditions}
+\begin{enumerate}
+\item Display a wordcloud depending on the label the user clicked
+\end{enumerate}
+\subsection{Flow of Events}
+\begin{enumerate}
+\item Retrieve the list of descriptors from the parsing process
+\item Generate a wordcloud from the descriptors
+\item Create a bubble where the label is
+\item Display the wordcloud in the bubble
+\end{enumerate}
+\end{document}
+

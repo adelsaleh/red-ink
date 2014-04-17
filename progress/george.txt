@@ -1,2 +1,3 @@
 -- Week 1 
 -Created data model
+-Helped create use cases
