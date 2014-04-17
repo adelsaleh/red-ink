@@ -1,0 +1,19 @@
+class Person
+* String name
+* int age
+-s int personcount = 0
++ Person(String name, int age)
++ String getName()
++ String setName(String newname)
+
+class Professor -> Person
+- String institute
+- String email
++ Professor(String name, int age, String email, String institute)
++ String getEmail()
++ String getInstitute
+
+class Student -> Person
+- String email
+- int grade
++ Student(String email, int grade)
