@@ -1,9 +1,0 @@
-# lolololo
-class Haha
-
-class Class -> Parent
-+ int property
-- float property2
-* lolo haha(String a)
-+ int getName()
--s String lol = "dada"

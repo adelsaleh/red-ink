@@ -36,7 +36,7 @@ filename = ""
 for c in classes:
     filename = "%s/%s.java" % (output_dir, c["name"].split()[2])
     content = ""
-    f = open(filename, "w")
+    f = open(filename, "w+")
 
     content = "%s {" % c["name"]
     for p in c["properties"]:
