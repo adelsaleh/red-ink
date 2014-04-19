@@ -66,7 +66,7 @@ for c in classes:
     
     # Add the methods
     for meth in c["methods"]:
-        return_type = filter(lambda x: not x == "static", meth.split()[1:2])[0]
+        return_type = filter(lambda x: not x == "static", meth.split()[1:])[0]
         toreturn = {"void": "", "int": "0", "float": "0.0", "double": "0.0", "boolean": "false", "char": "'\0'", "long": "0"}
         content = "%s\n\n\t%s { return %s; }" % (content, meth, toreturn[return_type] if return_type in toreturn else "null")
     content = "%s\n}" % content

@@ -1,3 +1,5 @@
+import java.util.*
+
 class WordCloud
 + WordCloud(String location, Map<Word, Integer> histogram)
 + String getImageURL()
@@ -50,8 +52,8 @@ class DescriptorFetcher
 + Iterator<Word> getUsefulWords(Word[] sentence)
 + Map<Word, Integer> getUsefulWordsAsHistogram(Word[] sentence)
 
-class Map
+class WorldMap
 - ArrayList<Location> pins
-+ Map()
++ WorldMap()
 + void addPin(Location l)
 + String toHTML()
