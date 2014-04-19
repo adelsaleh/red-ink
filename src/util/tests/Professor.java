@@ -1,3 +1,6 @@
+import java.io.*;
+import java.util.*;
+
 public class Professor extends Person {
 	private String institute;
 	private String email;

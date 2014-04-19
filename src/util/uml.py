@@ -7,6 +7,7 @@ if len(sys.argv) < 2:
 stream = [ l[:-1] for l in open(sys.argv[1]).readlines()]
 classes = []
 output_dir = "." if len(sys.argv) < 3 else sys.argv[2]
+includes = []
 
 for line in stream:
     tokens = line.split()
@@ -14,7 +15,9 @@ for line in stream:
     if line == "" or line[0] == '#':
         continue
 
-    if tokens[0] == 'class':
+    if tokens[0] == 'import':
+        includes.append("".join(tokens[1:]))
+    elif tokens[0] == 'class':
         extends = False if len(tokens) < 3 else (tokens[2] == '->')
         classes.append({
                 "classname": tokens[1],         
@@ -45,10 +48,12 @@ for line in stream:
 filename = ""
 for c in classes:
     filename = "%s/%s.java" % (output_dir, c["name"].split()[2])
-    content = ""
     f = open(filename, "w+")
 
-    content = "%s {" % c["name"]
+    content = ""
+    for include in includes:
+        content = "%simport %s;\n" % (content, include)
+    content = "%s\n%s {" % (content, c["name"])
  
     # Add the properties first
     for prop in c["properties"]:
@@ -61,7 +66,9 @@ for c in classes:
     
     # Add the methods
     for meth in c["methods"]:
-        content = "%s\n\n\t%s { return null; }" % (content, meth)
+        return_type = filter(lambda x: not x == "static", meth.split()[1:2])[0]
+        toreturn = {"void": "", "int": "0", "float": "0.0", "double": "0.0", "boolean": "false", "char": "'\0'", "long": "0"}
+        content = "%s\n\n\t%s { return %s; }" % (content, meth, toreturn[return_type] if return_type in toreturn else "null")
     content = "%s\n}" % content
 
     f.write(content)

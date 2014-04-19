@@ -1,5 +1,5 @@
-build:
+run:
 	python uml.py tests/uml_test.txt tests/src
 
-run:
+build:
 	python uml.py

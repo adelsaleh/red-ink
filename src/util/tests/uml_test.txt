@@ -1,3 +1,6 @@
+import java.io.*
+import java.util.*
+
 class Person
 * String name
 * int age
@@ -17,3 +20,6 @@ class Student -> Person
 - String email
 - int grade
 + Student(String email, int grade)
++ int getGrade()
++ boolean hasGrade()
++ void setGrade(int newgrade)

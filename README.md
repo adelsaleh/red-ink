@@ -14,6 +14,9 @@ A wordcloud will contain the words that the author used to describe a location.
 The UML file should follow this template (which is self-explanatory)
 
 ```
+# to use a package (it will be included in all the files
+import java.io.*
+
 # to create a class
 class Class1
 
