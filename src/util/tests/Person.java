@@ -3,9 +3,11 @@ public class Person {
 	protected int age;
 	private static int personcount = 0;
 
-	public Person(String name, int age) { }
+	public Person(){}
 
-	public String getName() { }
+	public Person(String name, int age) {  } 
 
-	public String setName(String newname) { }
+	public String getName() { return null; }
+
+	public String setName(String newname) { return null; }
 }

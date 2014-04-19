@@ -11,7 +11,7 @@ class Professor -> Person
 - String email
 + Professor(String name, int age, String email, String institute)
 + String getEmail()
-+ String getInstitute
++ String getInstitute()
 
 class Student -> Person
 - String email
