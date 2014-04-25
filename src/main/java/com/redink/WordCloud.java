@@ -2,12 +2,31 @@ package com.redink;
 import java.util.*;
 
 public class WordCloud {
-	private String location;
-	private Map<Word, Integer> histogram;
+    /**
+     * OVERVIEW: WordCloud: A set of (word, occurrence) tuple displayed in 
+     * a compressed image.
+     */
 
-	public WordCloud(){}
+     /*
+      * AF(location, histogram): An image containing histogram.keys.
+      */
+    private String location;
+    private Map<Word, Integer> histogram;
 
-	public WordCloud(String location, Map<Word, Integer> histogram) {  } 
+    public WordCloud(){}
 
-	public String getImageURL() { return null; }
+    public WordCloud(String location, Map<Word, Integer> histogram) {  } 
+
+    
+    public String getImageURL() {
+    /**
+     * EFFECTS: Generates the wordcloud image, writes it to
+     *             persistent storage and returns the url
+     * RETURNS: The URL of the image
+     * THROWS: IOException in case disk write fails
+     *         InvalidArgumentsException in case
+     *         either histogram or location is empty.
+     */
+        return null; 
+    }
 }

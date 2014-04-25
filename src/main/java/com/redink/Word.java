@@ -2,6 +2,14 @@ package com.redink;
 import java.util.*;
 
 public class Word {
+	/**
+	 * OVERVIEW: A word is a string of characters in a novel.
+	 */
+
+	 /*
+	  * AF(word, offset, tag)=w | w is the string word of type tag at a
+	  * 	distance offset from the start of an unknown novel.
+	  */
 	private String word;
 	private int offset;
 	private ETag tag;
