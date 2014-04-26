@@ -24,5 +24,5 @@ public class Word {
 
 	public int getOffset() { return 0; }
 
-	public Etag getTag() { return null; }
+	public ETag getTag() { return null; }
 }

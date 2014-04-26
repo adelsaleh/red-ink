@@ -6,11 +6,11 @@ public class DescriptorFetcher {
      * OVERVIEW: Filter for words that are useful to us
      *           based on tags
      */
-	private Etag[] allowedTags;
+	private ETag[] allowedTags;
 
 	public DescriptorFetcher(){}
 
-	public DescriptorFetcher(Etag[] allowedTags) {  } 
+	public DescriptorFetcher(ETag[] allowedTags) {  } 
 
 	public boolean isUseful(Word word) {
         /**
