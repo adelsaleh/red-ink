@@ -38,7 +38,26 @@ public class WordTest extends TestCase {
     public void tearDown() {
 
     }
-
+    
+    @Ignore("Not implemented yet")
+    public void testWord() {
+    	try{
+    		Word w10 = new Word(null);
+    		fail("Cannot have null string as parameter");
+    	}catch(Exception e) {}    	
+    }
+    
+    @Ignore("Not implemented yet")
+    public void testIsWord() {
+    	assertTrue(Word.isWord("abracadbra"));
+    	assertTrue(Word.isWord("abracadbra9"));
+    	assertTrue(Word.isWord("abracadbra'"));
+    	assertTrue(Word.isWord("abracadbra9'"));
+    	assertFalse(Word.isWord(""));
+    	assertFalse(Word.isWord("][fw"));
+    	assertFalse(Word.isWord("\"heuheuheuhe\""));
+    }
+    
     @Ignore("Not implemented yet")
     public void testEquals() {
         assertTrue(w1.equals(w2));
