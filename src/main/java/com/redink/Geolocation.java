@@ -7,10 +7,10 @@ public class Geolocation {
      */
 	public Geolocation(){}
 
-	public static Location getLocation(double lat, double log) throws InvalidCoordinatesException{ 
+	public static Location getLocation(double latitude, double longitude) throws InvalidCoordinatesException{ 
         /**
-         * EFFECTS: Returns the location at (latitude, longitude)
-         * RETURNS: A fully populated location object describing (lat, long)
+         * EFFECTS: Retrieves the location using coordinates (latitude, longitude)
+         * RETURNS: A fully populated location object describing (latitude, longitude)
          *          or null if location is not found
          * THROWS: InvalidCoordinatesException if invalid latitude and
          *          longitude values are given.
@@ -20,7 +20,7 @@ public class Geolocation {
 
 	public static Location getLocation(String locationName) { 
         /**
-         * EFFECTS: Returns the location described by locationName
+         * EFFECTS: Retrieves the location described by locationName
          * RETURNS: A fully populated location object describing 
          *          locationName
          */

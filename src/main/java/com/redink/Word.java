@@ -36,10 +36,11 @@ public class Word {
 
 	public ETag getTag() { return null; }
 
-    public boolean equals(Word w2) {
+    public boolean equals(Word w2) {	
         /**
          * EFFECTS: Checks if AF(this) == AF(w2)
          * RETURNS: True if they are equal, false otherwise.
          */
+    	return false;
     }
 }

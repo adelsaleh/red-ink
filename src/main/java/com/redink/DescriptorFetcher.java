@@ -6,6 +6,7 @@ public class DescriptorFetcher {
      * OVERVIEW: Filter for words that are useful to us
      *           based on tags
      */
+	
 	private ETag[] allowedTags;
 
 	public DescriptorFetcher(){}
@@ -14,7 +15,7 @@ public class DescriptorFetcher {
 
 	public boolean isUseful(Word word) {
         /**
-         * EFFECTS: Returns whether a word is useful according the tags
+         * EFFECTS: Checks whether a word is useful according the tags
          *          we specified
          * RETURNS: True if useful, false otherwise
          */
@@ -23,7 +24,9 @@ public class DescriptorFetcher {
 
 	public Iterator<Word> getUsefulWords(Word[] sentence) {
         /**
-         * EFFECTS: Returns an iterator that iterates over the useful words
+         * EFFECTS: Filters the undesirable words from the sentence based
+         * 			on allowed tag
+         * RETURNS: An iterator that iterates over the useful words
          *          in the sentence
          */
         return null; 
@@ -31,8 +34,10 @@ public class DescriptorFetcher {
 
 	public Map<Word, Integer> getUsefulWordsAsHistogram(Word[] sentence) { 
         /**
-         * EFFECTS: Returns a histogram containing the number of occurrences
-         *          of each word in the sentence
+         * EFFECTS: generates a histogram containing the number of occurrences
+         *          of each word in the sentence 
+         * RETURNS: A map where the key is the word and the value is 
+         * 			the number of characters
          */
         return null; 
     }

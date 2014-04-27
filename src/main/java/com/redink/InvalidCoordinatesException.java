@@ -1,5 +1,12 @@
+package com.redink;
+
 public class InvalidCoordinatesException extends Exception {
-    public InvalidCoordinatesException() {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	public InvalidCoordinatesException() {
         super();
     }
 

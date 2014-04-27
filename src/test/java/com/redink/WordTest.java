@@ -1,8 +1,13 @@
 package com.redink;
 
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Ignore;
+
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
+
 import com.redink.Word;
 
 /**
@@ -15,11 +20,13 @@ public class WordTest extends TestCase {
     Word w3;
     Word w4;
     Word w5;
+    Word w6;
+    Word w7;
+    
     @Before
     public void setUp() {
         w1 = new Word("hello", 542);
         w2 = new Word("hello", 542);
-        
         w3 = new Word("hello", 340);
         w4 = new Word("how", 542);
         w5 = new Word("how", 302);
@@ -33,7 +40,6 @@ public class WordTest extends TestCase {
     }
 
     @Ignore("Not implemented yet")
-    @Test
     public void testEquals() {
         assertTrue(w1.equals(w2));
         assertFalse(w1.equals(w3));

@@ -16,7 +16,7 @@ class Location
 - String locationName
 - WordCloud wordcloud
 + Location(String locationName, double lat, double log)
-+ WordCloud generateWordCloud(Novel n, Word location, int radius)
++ WordCloud generateWordCloud(Novel n, Word[] location, int radius)
 + double getLatitude()
 + double getLongitude()
 + String getLocationName()

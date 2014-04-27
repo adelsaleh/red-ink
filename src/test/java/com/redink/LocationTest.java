@@ -1,8 +1,13 @@
 package com.redink;
 
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Ignore;
+
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
+
 import com.redink.Location;
 import com.redink.Geolocation;
 import com.redink.InvalidCoordinatesException;
@@ -25,7 +30,6 @@ public class LocationTest extends TestCase {
     }
 
     @Ignore("Not implemented yet")
-    @Test
     public void testgenerateWordCloud() {
                 
     }

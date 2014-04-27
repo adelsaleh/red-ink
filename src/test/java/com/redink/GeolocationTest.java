@@ -1,8 +1,13 @@
 package com.redink;
 
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Ignore;
+
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
+
 import com.redink.Location;
 import com.redink.Geolocation;
 import com.redink.InvalidCoordinatesException;
@@ -28,14 +33,19 @@ public class GeolocationTest extends TestCase {
          *          address provided
          * RETURNS: True if they match, false otherwise
          */
-        Location l = Geolocation.getLocation(lat, lng);
+    	Location l = null;
+		try {
+			l = Geolocation.getLocation(lat, lng);
+		} catch (InvalidCoordinatesException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         if (l == null) return false;
-        return (l.getLocationName.equals(address));
+        return (l.getLocationName().equals(address));
     }
 
     
     @Ignore("Not implemented yet")
-    @Test
     public void testGetLocationWithProperCoords() {
         /**
          * Considering the fact that the api is probably well tested
@@ -49,8 +59,8 @@ public class GeolocationTest extends TestCase {
         assertTrue(locationSucceed(-90,-180,"Antarctica"));
         assertTrue(locationSucceed(-90,40,"Antarctica"));
         
-        assertFalse(locationSucceed(40, -180);
-        assertFalse(locationSucceed(40, 180);
+        assertFalse(locationSucceed(40, -180, ""));
+        assertFalse(locationSucceed(40, 180, ""));
 
     }
 
@@ -60,15 +70,16 @@ public class GeolocationTest extends TestCase {
          * to get the specified position
          * RETURNS: True if exception is thrown, false otherwise
          */
-        boolean ret = true
+        boolean ret = true;
+        Location l;
         try {
             l = Geolocation.getLocation(lat, lng);
             ret = false;
         }catch(InvalidCoordinatesException e) { }
         return ret;
     }
+    
     @Ignore("Not implemented yet")
-    @Test
     public void testGetLocationWithInvalidCoords() {
         assertTrue(locationFail(-90.01, 30.4322));
         assertTrue(locationFail(-60.00, 180.4322));
@@ -83,7 +94,6 @@ public class GeolocationTest extends TestCase {
     }
 
     @Ignore("Not implemented yet")
-    @Test
     public void testGetLocationWithValidAddress() {
         assertTrue(locationByAddress("London"));
         assertFalse(locationByAddress("adfsfjafj"));
