@@ -14,9 +14,21 @@ public class LocationExtractor {
 
 	public LocationExtractor(){}
 
-	public LocationExtractor(Novel n) {  } 
+	public LocationExtractor(Novel novel) {  } 
 
-	public Iterator<Location> locationIterator() { return null; }
+	public Iterator<Location> locationIterator() { 
+	/**
+	 * EFFECTS: Retrieves all locations from novel
+	 * RETURNS: An Iterator over the locations found in the novel	
+	 */
+		return null; 
+	}
 
-	public boolean isLocation(Word w) { return false; }
+	public boolean isLocation(Word[] words) { 
+	/**
+	 * EFFECTS: Checks if words contains a location	
+	 * RETURNS: true if words contains a location, false otherwise
+	 */
+		return false; 
+	}
 }
