@@ -43,7 +43,7 @@ class LocationExtractor
 - Novel novel
 + LocationExtractor(Novel n)
 + Iterator<Location> locationIterator()
-+ boolean isLocation(Word w)
++ boolean isLocation(Word[] sentence)
 
 class DescriptorFetcher
 - Etag[] allowedTags

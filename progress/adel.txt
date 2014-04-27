@@ -1,3 +1,4 @@
 -- Week 1 
 -Created data model
 -Helped Creating the UML
+-Revised the specification
