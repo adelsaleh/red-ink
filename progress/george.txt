@@ -4,3 +4,7 @@
 -Created a program that takes UML files and outputs JAVA classes
 -Helped with UML
 -Drew MDD
+
+-- Week 2
+-Designed the UI
+-Created the template
