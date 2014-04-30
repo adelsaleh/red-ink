@@ -1,4 +1,6 @@
 package com.redink;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.*;
 
 public class Novel {
@@ -8,42 +10,87 @@ public class Novel {
      */
 
      /*
-      * AF(words, filename)=A list of all the tagged words contained in
+      * AF(words)=A list of all the tagged words contained in
       * the novel provided at filename.
       *
       * Representation Invariant: words contains no punctuation and contains
       *                           uninteresting words
       */
-	private Word[] words;
-	private String filename;
+	private ArrayList<Word> words;
 
-	private Novel(){}
 
-	public Novel(String path) { 
+	public Novel(String path) throws FileNotFoundException { 
 		/**
 		 * EFFECTS: Retrieves all words from the file in path and places 
 		 * 			them in words. Words containing negative characters 
+		 * THROWS: File Not Found Exception if the file does not exist
 		 */
+		words = new ArrayList<Word>();
+		Scanner reader = new Scanner(new File(path));
+		reader.useDelimiter("[^a-zA-Z\']+");
+		int offset = 0;
+		while(reader.hasNext()) {
+			String word = reader.next().toLowerCase();
+			words.add(new Word(word, offset++));
+		}
+		reader.close();
+		
 	} 
 
-	public Word[] getSurroundingWords(Word w, int radius) { 
+	public ArrayList<Word> getSurroundingWords(String w, int radius) { 
         /**
-         * EFFECTS: Gets all the words surrounding the first instance
-         *          of w within radius radius
-         * RETURNS: A list of words containing all the words
+         * EFFECTS: Generates a list of words without duplicates (a duplicate is 
+         * a word with the same string and offset) sorted by offset containing the 
+         * words surrounding with the given radius each occurrence of the word
+         * 
+         * RETURNS: A list of words containing all the surrounding words
+         * 
          * THROWS: WordNotFoundException in case the word is not found
          */
-        return null; 
+		
+		if(radius<0) throw new IllegalArgumentException();
+		ArrayList<Word> surroundingWords = new ArrayList<Word>();
+		for(int i=0; i<words.size(); i++){
+			if(words.get(i).getWord().equals(w)){
+				for(Word word : getSurroundingWords(i, radius)) {
+					surroundingWords.add(word);
+				}
+			}
+		}
+		Collections.sort(surroundingWords);
+		for(int i=0; i<surroundingWords.size()-1; i++){
+			if(surroundingWords.get(i).equals(surroundingWords.get(i+1)) || surroundingWords.get(i).getWord().equals(w)){
+				surroundingWords.remove(i);
+				i--;
+			}
+		}
+        return surroundingWords; 
     }
 
-	public Word[] getSurroundingWords(int offset, int radius) { 
+	public ArrayList<Word> getSurroundingWords(int offset, int radius) { 
         /**
          * EFFECTS: Gets the words from offset-radius to offset+radius
          *          inclusive within radius radius
          * RETURNS: A list containing all the words
-         * THROWS: OutOfBoundsException if offset is less than 0
+         * THROWS: IllegalArgumentException if offset<=0
          *          or if offset is bigger than the size of the novel.
          */
-        return null; 
+		if(radius<=0) throw new IllegalArgumentException();
+		ArrayList<Word> surroundingWords = new ArrayList<Word>();
+		if(offset-radius<0){
+			for(int j=0; j<=offset+radius; j++){
+				if(offset!=j) surroundingWords.add(words.get(j));
+			}
+		} else if(offset+radius>=words.size()){
+			for(int j=offset-radius; j<words.size(); j++){
+				if(offset!=j) surroundingWords.add(words.get(j));
+			}
+		} else {
+			for(int j=offset-radius; j<=offset+radius; j++){
+				if(offset!=j) surroundingWords.add(words.get(j));
+			}
+		}
+		
+        return surroundingWords; 
     }
 }

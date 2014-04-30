@@ -1,7 +1,7 @@
 package com.redink;
 import java.util.*;
 
-public class Word{
+public class Word implements Comparable<Word>{
 	/**
 	 * OVERVIEW: A word is a string of characters at a certain position 
      *              in a novel.
@@ -30,12 +30,15 @@ public class Word{
 	/**
 	 * REQUIRES: word is non empty or null	
 	 */
+		this.word = word.toLowerCase();
+		this.offset = offset;
 	} 
 
 	public Word(String word) {  
 	/**
 	 * REQUIRES: word is non empty or null	
 	 */	
+		this.word = word.toLowerCase();
 	}
 	
 	public static boolean isWord(String word) {
@@ -48,22 +51,33 @@ public class Word{
 		return false;
 	}
 
-	public String getWord() { return null; }
+	public String getWord() { return word; }
 
-	public int getOffset() { return 0; }
+	public int getOffset() { return offset; }
 	
 	@Override
 	public int hashCode() {
 		return word.hashCode();
 	}
 
-	public ETag getTag() { return null; }
+	@Override
+	public String toString(){
+		return word + ": " + offset;
+	}
+	
 
+	
+	public ETag getTag() { return null; }
+	
     public boolean equals(Word w2) {	
     /**
      * EFFECTS: Checks if AF(this) == AF(w2)
      * RETURNS: True if they are equal, false otherwise.
      */
-    	return false;
+    	return (w2.getWord().equals(this.word) && w2.offset==this.offset);
     }
+
+	public int compareTo(Word o) {
+		return this.offset - o.offset;
+	}
 }
