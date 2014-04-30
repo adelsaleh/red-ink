@@ -35,7 +35,39 @@ public class Novel {
 		}
 		reader.close();
 		
-	} 
+	}
+	
+	private ArrayList<Integer> indicesOfSentence(Word[] sentence) {
+		/**
+		 * EFFECTS: Finds the position of sentence in the novel
+		 * RETURNS: Index of first word in the sentence
+		 */
+		ArrayList<Integer> indices = new ArrayList<Integer>();
+		int sentenceIndex = 0;
+		for(int i = 0; i < words.size(); i++) {
+			if(sentence[sentenceIndex].getWord().equals(words.get(i).getWord())) {
+				sentenceIndex++;
+			}else{
+				sentenceIndex=0;
+			}
+			if(sentenceIndex == sentence.length-1) {
+				indices.add(i-sentenceIndex);
+			}
+		}
+		return (indices.size() == 0) ? indices:null;
+	}
+	
+	public ArrayList<Word> getSurroundingSentence(Word[] sentence, int radius) {		
+		/**
+         * EFFECTS: Generates a list of words without duplicates (a duplicate is 
+         * a word with the same string and offset) sorted by offset containing the 
+         * words surrounding the sentence given as far as the given radius
+         * 
+         * RETURNS: A list of words containing all the surrounding words
+         */
+		return words;
+		
+	}
 
 	public ArrayList<Word> getSurroundingWords(String w, int radius) { 
         /**
