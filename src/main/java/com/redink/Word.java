@@ -1,7 +1,7 @@
 package com.redink;
 import java.util.*;
 
-public class Word {
+public class Word{
 	/**
 	 * OVERVIEW: A word is a string of characters at a certain position 
      *              in a novel.
@@ -26,21 +26,44 @@ public class Word {
 
 	public Word(){}
 
-	public Word(String word, int offset) {  } 
+	public Word(String word, int offset) {  
+	/**
+	 * REQUIRES: word is non empty or null	
+	 */
+	} 
 
-	public Word(String word) {  } 
+	public Word(String word) {  
+	/**
+	 * REQUIRES: word is non empty or null	
+	 */	
+	}
+	
+	public static boolean isWord(String word) {
+	/**
+	 * EFFECTS: Checks if a word is valid. A valid
+	 * 			word contains alphanumeric characters
+	 * 			and optionally a single quote(').
+	 * RETURNS: True if word is valid, false otherwise
+	 */
+		return false;
+	}
 
 	public String getWord() { return null; }
 
 	public int getOffset() { return 0; }
+	
+	@Override
+	public int hashCode() {
+		return word.hashCode();
+	}
 
 	public ETag getTag() { return null; }
 
     public boolean equals(Word w2) {	
-        /**
-         * EFFECTS: Checks if AF(this) == AF(w2)
-         * RETURNS: True if they are equal, false otherwise.
-         */
+    /**
+     * EFFECTS: Checks if AF(this) == AF(w2)
+     * RETURNS: True if they are equal, false otherwise.
+     */
     	return false;
     }
 }

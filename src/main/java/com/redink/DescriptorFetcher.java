@@ -22,7 +22,7 @@ public class DescriptorFetcher {
         return false; 
     }
 
-	public Iterator<Word> getUsefulWords(Word[] sentence) {
+	public Iterable<Word> getUsefulWords(Word[] sentence) {
         /**
          * EFFECTS: Filters the undesirable words from the sentence based
          * 			on allowed tag

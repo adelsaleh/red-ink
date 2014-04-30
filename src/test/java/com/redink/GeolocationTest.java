@@ -63,7 +63,16 @@ public class GeolocationTest extends TestCase {
         assertFalse(locationSucceed(40, 180, ""));
 
     }
-
+    
+    @Ignore("Not implemented yet")
+    public void testGetLocationWithInvalidCoords() {
+        assertTrue(locationFail(-90.01, 30.4322));
+        assertTrue(locationFail(-60.00, 180.4322));
+        assertTrue(locationFail(-70.00, -180.4322));
+        assertTrue(locationFail(90.01, 4.2134));
+        assertTrue(locationFail(90.01, 180.01));
+    }
+    
     private boolean locationFail(double lat, double lng) {
         /**
          * EFFECTS: Checks whether an exception is thrown when trying
@@ -77,15 +86,6 @@ public class GeolocationTest extends TestCase {
             ret = false;
         }catch(InvalidCoordinatesException e) { }
         return ret;
-    }
-    
-    @Ignore("Not implemented yet")
-    public void testGetLocationWithInvalidCoords() {
-        assertTrue(locationFail(-90.01, 30.4322));
-        assertTrue(locationFail(-60.00, 180.4322));
-        assertTrue(locationFail(-70.00, -180.4322));
-        assertTrue(locationFail(90.01, 4.2134));
-        assertTrue(locationFail(90.01, 180.01));
     }
 
     private boolean locationByAddress(String address) {

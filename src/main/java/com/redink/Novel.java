@@ -19,12 +19,17 @@ public class Novel {
 
 	private Novel(){}
 
-	public Novel(String path) {  } 
+	public Novel(String path) { 
+		/**
+		 * EFFECTS: Retrieves all words from the file in path and places 
+		 * 			them in words. Words containing negative characters 
+		 */
+	} 
 
 	public Word[] getSurroundingWords(Word w, int radius) { 
         /**
          * EFFECTS: Gets all the words surrounding the first instance
-         *          of w
+         *          of w within radius radius
          * RETURNS: A list of words containing all the words
          * THROWS: WordNotFoundException in case the word is not found
          */
@@ -34,7 +39,7 @@ public class Novel {
 	public Word[] getSurroundingWords(int offset, int radius) { 
         /**
          * EFFECTS: Gets the words from offset-radius to offset+radius
-         *          inclusive
+         *          inclusive within radius radius
          * RETURNS: A list containing all the words
          * THROWS: OutOfBoundsException if offset is less than 0
          *          or if offset is bigger than the size of the novel.
