@@ -1,5 +1,6 @@
 package com.redink;
 import java.util.*;
+import java.util.regex.Pattern;
 
 public class Word implements Comparable<Word>{
 	/**
@@ -23,37 +24,50 @@ public class Word implements Comparable<Word>{
 	private String word;
 	private int offset;
 	private ETag tag;
-
+	public static final Comparator<Word> offset_comparator = new Comparator<Word>() {
+		public int compare(Word w1, Word w2) {
+			return w1.offset-w2.offset;
+		}
+	};
+	public static final Comparator<Word> string_comparator = new Comparator<Word>() {
+		public int compare(Word w1, Word w2) {
+			return w1.getWord().compareTo(w2.getWord());
+		}
+	};
+	
 	public Word(){}
+	
+	public Word(String word) {  
+	/**
+	 * REQUIRES: word is non empty or null	
+	 */	
+			if(Pattern.matches(" *", word)) throw new IllegalArgumentException("Word cannot be empty");
+			this.word = word.toLowerCase();
+		}
 
 	public Word(String word, int offset) {  
 	/**
 	 * REQUIRES: word is non empty or null	
 	 */
+		if(Pattern.matches(" *", word)) throw new IllegalArgumentException("Word cannot be empty");
 		this.word = word.toLowerCase();
 		this.offset = offset;
 	} 
 
-	public Word(String word) {  
+	public Word(String word, int offset, ETag tag) {  
 	/**
 	 * REQUIRES: word is non empty or null	
-	 */	
-		this.word = word.toLowerCase();
-	}
-	
-	public static boolean isWord(String word) {
-	/**
-	 * EFFECTS: Checks if a word is valid. A valid
-	 * 			word contains alphanumeric characters
-	 * 			and optionally a single quote(').
-	 * RETURNS: True if word is valid, false otherwise
 	 */
-		return false;
-	}
+		if(Pattern.matches(" *", word)) throw new IllegalArgumentException("Word cannot be empty");
+		this.word = word.toLowerCase();
+		this.offset = offset;
+		this.tag = tag;
+	} 
+	
 
 	public String getWord() { return word; }
-
 	public int getOffset() { return offset; }
+	public ETag getTag() { return tag; }
 	
 	@Override
 	public int hashCode() {
@@ -65,10 +79,6 @@ public class Word implements Comparable<Word>{
 		return word + ": " + offset;
 	}
 	
-
-	
-	public ETag getTag() { return null; }
-	
     public boolean equals(Word w2) {	
     /**
      * EFFECTS: Checks if AF(this) == AF(w2)
@@ -77,7 +87,7 @@ public class Word implements Comparable<Word>{
     	return (w2.getWord().equals(this.word) && w2.offset==this.offset);
     }
 
-	public int compareTo(Word o) {
-		return this.offset - o.offset;
+	public int compareTo(Word anotherWord) {
+		return offset_comparator.compare(this, anotherWord);
 	}
 }
