@@ -3,3 +3,6 @@
 -Wrote use cases
 -Suggested to build UML to JAVA program
 -Created UML
+-- Week 2
+-Wrote test cases
+-Helped with implementation

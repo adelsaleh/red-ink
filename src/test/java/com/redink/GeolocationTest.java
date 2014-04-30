@@ -36,7 +36,7 @@ public class GeolocationTest extends TestCase {
     	Location l = null;
 		try {
 			l = Geolocation.getLocation(lat, lng);
-		} catch (InvalidCoordinatesException e) {
+		} catch (IllegalArgumentException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -84,7 +84,7 @@ public class GeolocationTest extends TestCase {
         try {
             l = Geolocation.getLocation(lat, lng);
             ret = false;
-        }catch(InvalidCoordinatesException e) { }
+        }catch(IllegalArgumentException e) { }
         return ret;
     }
 

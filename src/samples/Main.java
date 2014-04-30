@@ -20,7 +20,7 @@ public class Main {
 		try {
 			//URL url = new URL("https://maps.googleapis.com/maps/api/geocode/json?address=Beyrouth&sensor=true&key=AIzaSyAjsfXkh2j_nPej1OojKT-4yjZeN5UyGOU");
 			String address = "1600+Amphitheatre+Parkway,+Mountain+View,+CA";
-			URL url = new URL("https://maps.googleapis.com/maps/api/geocode/json?address=" + address + "&sensor=true&key=AIzaSyAjsfXkh2j_nPej1OojKT-4yjZeN5UyGOU");
+			URL url = new URL("https://maps.googleapis.com/maps/api/geocode/json?address=" + address + "&sensor=true");
 			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 			connection.setRequestMethod("GET");
 			connection.setDoOutput(true);

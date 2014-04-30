@@ -1,3 +1,4 @@
+
 package com.redink;
 import java.util.*;
 
@@ -19,6 +20,9 @@ public class DescriptorFetcher {
          *          we specified
          * RETURNS: True if useful, false otherwise
          */
+		if (word.equals(allowedTags)) {
+			return true;
+		}
         return false; 
     }
 
@@ -29,6 +33,7 @@ public class DescriptorFetcher {
          * RETURNS: An iterator that iterates over the useful words
          *          in the sentence
          */
+		
         return null; 
     }
 

@@ -1,5 +1,7 @@
 package com.redink;
 
+import java.io.FileNotFoundException;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -16,12 +18,16 @@ import com.redink.InvalidCoordinatesException;
  * Unit test for simple App.
  */
 public class LocationTest extends TestCase {
-    
     Novel n;
     Word location;
+    
     @Before
-    public void setUp() {
-        n = new Novel("test_novels/");
+    public void setUp(){
+        try {
+			n = new Novel("test_novels/");
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
     }
     
     @After
