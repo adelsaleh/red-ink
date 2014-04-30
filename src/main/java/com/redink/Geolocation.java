@@ -1,17 +1,11 @@
 package com.redink;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.net.*;
-import java.security.cert.Certificate;
 import java.util.*;
 
-import javax.imageio.stream.FileImageInputStream;
 import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLPeerUnverifiedException;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class Geolocation {
@@ -21,6 +15,7 @@ public class Geolocation {
 	private static String apiKey;
 	private final static String latIdentifier = "{latitude}";
 	private final static String lngIdentifier = "{longitude}";
+	private final static String addressIdentifier = "{address}";
 	private final static String keyIdentifier = "{API_KEY}";
 	private static String normalUrl;
 	private static String reverseUrl;
@@ -31,18 +26,30 @@ public class Geolocation {
 		Properties p = new Properties();
 		try {
 			p.load(new FileInputStream(new File("configuration.properties")));
-			apiKey = (String)p.get("com.google.geolocation");
-			String url = (String)p.get("com.google.geolocation.reverse.url");
-			url.replace(keyIdentifier, apiKey);
+			apiKey = p.get("com.google.geolocation").toString();
+			System.out.println(apiKey);
+			String url = p.get("com.google.geolocation.reverse.url").toString();
+			url = url.replace(keyIdentifier, apiKey);
 			reverseUrl = url;
 			url = (String)p.get("com.google.geolocation.normal.url");
-			url.replace(keyIdentifier, apiKey);
+			url = url.replace(keyIdentifier, apiKey);
 			normalUrl = url;
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	private static String getResponse(URLConnection c) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(c.getInputStream()));
+        StringBuilder sb = new StringBuilder();
+        String line;
+        while ((line = br.readLine()) != null) {
+            sb.append(line+"\n");
+        }
+        br.close();
+        return sb.toString();
 	}
 
 	public static Location getLocation(double latitude, double longitude){ 
@@ -54,34 +61,72 @@ public class Geolocation {
          *          longitude values are given.
          */
 		if(latitude < -90.0  || latitude > 90.0) throw new IllegalArgumentException("Latitude must be between -90 and 90");
-		if(latitude < -180.0  || latitude > 180.0) throw new IllegalArgumentException("Longitude must be between -180 and 180");
-		String newUrl = normalUrl.replace(latIdentifier, Double.toString(latitude));
-		newUrl = newUrl.replace(lngIdentifier, Double.toString(latitude));
+		if(longitude < -180.0  || longitude > 180.0) throw new IllegalArgumentException("Longitude must be between -180 and 180");
+		String newUrl = reverseUrl.replace(latIdentifier, Double.toString(latitude));
+		newUrl = newUrl.replace(lngIdentifier, Double.toString(longitude));
 		URL url;
-		String result;
+		Location result = null;
 		try {
 			url = new URL(newUrl);
 			HttpsURLConnection conn = (HttpsURLConnection)url.openConnection();
 			conn.connect();
-			String response = (String)conn.getContent();
+			if(conn.getResponseCode() != 200) {
+				throw new IOException("Invalid response code");
+			}
+			System.out.println(latitude + " " + longitude);
+			System.out.println(newUrl);
+			JSONObject obj = new JSONObject(getResponse(conn));
 			conn.disconnect();
-			JSONObject obj = new JSONObject(response);
-			obj.getJSONArray("results").getJSONObject(0).getString("formatted_address");
+			if(obj.getString("status").equals("OK")) {
+				String formattedAddress = obj.getJSONArray("results").getJSONObject(0).getString("formatted_address");
+				System.out.println(formattedAddress);
+				result = new Location(filter(formattedAddress), latitude, longitude);
+			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-        return null; 
+        return result; 
     }
-
+	
+	private static Word[] filter(String formattedAddress){
+		String[] swords = formattedAddress.split("[^a-zA-Z0-9\']+");
+		Word[] words = new Word[swords.length];
+		for(int i=0; i<words.length; i++){
+			words[i] = new Word(swords[i]);
+			System.out.println(swords[i]);
+		}
+		
+		return words;
+	}
+	
 	public static Location getLocation(String locationName) { 
         /**
          * EFFECTS: Retrieves the location described by locationName
          * RETURNS: A fully populated location object describing 
          *          locationName
          */
-		
-        return null; 
+		String newUrl = normalUrl.replace(addressIdentifier, locationName);
+		URL url;
+		Location result = null;
+		try {
+			url = new URL(newUrl);
+			HttpsURLConnection conn = (HttpsURLConnection)url.openConnection();
+			conn.connect();
+			if(conn.getResponseCode() != 200) {
+				throw new IOException("Invalid response code");
+			}
+			System.out.println(newUrl);
+			JSONObject obj = new JSONObject(getResponse(conn));
+			conn.disconnect();
+			if(obj.getString("status").equals("OK")) {
+				JSONObject latlng = obj.getJSONArray("results").getJSONObject(0).getJSONObject("geometry").getJSONObject("location");
+				result = new Location(filter(locationName), latlng.getDouble("lat"), latlng.getDouble("lng"));
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        return result; 
     }
 }

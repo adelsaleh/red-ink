@@ -7,9 +7,13 @@ public class Location {
 	private Word[] locationName;
 	private WordCloud wordCloud;
 
-	public Location(){}
+	private Location(){}
 
-	public Location(Word[] locationName, double lat, double log) {  } 
+	public Location(Word[] locationName, double lat, double lng) { 
+		this.locationName = locationName;
+		this.latitude = lat;
+		this.longitude = lng;
+	} 
 	
 	public WordCloud generateWordCloud(Novel n, int radius) { 
 	/**

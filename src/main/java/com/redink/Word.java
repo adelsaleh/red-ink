@@ -30,7 +30,7 @@ public class Word implements Comparable<Word>{
 	/**
 	 * REQUIRES: word is non empty or null	
 	 */
-		this.word = word;
+		this.word = word.toLowerCase();
 		this.offset = offset;
 	} 
 
@@ -38,7 +38,7 @@ public class Word implements Comparable<Word>{
 	/**
 	 * REQUIRES: word is non empty or null	
 	 */	
-		this.word = word;
+		this.word = word.toLowerCase();
 	}
 	
 	public static boolean isWord(String word) {
