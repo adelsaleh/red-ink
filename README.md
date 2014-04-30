@@ -47,3 +47,4 @@ class Class1 -> Class2
 * Rafeh, Bayan
 * Saleh, Adel
 * Zakhour, George
+* Chaar, Omar
