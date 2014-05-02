@@ -23,11 +23,7 @@ public class LocationTest extends TestCase {
     
     @Before
     public void setUp(){
-        try {
-			n = new Novel("test_novels/");
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
+     
     }
     
     @After
