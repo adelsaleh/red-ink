@@ -9,8 +9,8 @@
             width: 90%;
             margin: auto;
         }
-        input[type=file] {
-            padding: 0;
+        input[type=text] {
+            padding: 5px;
             margin-bottom: 10px;
         }
         .jumbotron h1 {
@@ -32,12 +32,12 @@
         </div>
 
         <div id="form-holder" class="well bs-component">
-            <form class="form-horizontal" action="novel.html" method="post">
+            <form class="form-horizontal" action="" method="post">
                 <fieldset>
                     <legend>Start by uploading a novel</legend>
                     <div class="form-group">
                         <div class="col-lg-10">
-                            <input class="form-control" id="input" type="file">
+                            <input class="form-control" id="input" type="text">
                         </div>
                         <div class="col-lg-2">
                             <button type="submit" class="btn btn-primary">Upload
@@ -53,15 +53,19 @@
             </div>
         </div>
 
+        <div id="potato"></div>
         <!-- The javascript is to simulate the application's dynamics -->
         <script>
         document.getElementsByClassName("close")[0].onclick = function() {
-            console.log(this.parentNode);
             this.parentNode.style.display = "none";
         }
 
-        document.forms[0].onsubmit = function() {
+        document.forms[0].onsubmit = function(e) {
+            
+            if(e.preventDefault) e.preventDefault();
             var input = document.getElementById("input").value;
+            java.func(input);
+            document.getElementById("potato").innerHTML = input;
             var extension = input.substr(input.lastIndexOf(".")+1);
             if(input == "" || extension != "txt") {
                 document.getElementsByClassName("alert")[0].style.display="block";

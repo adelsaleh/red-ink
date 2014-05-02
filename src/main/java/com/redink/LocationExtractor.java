@@ -21,7 +21,7 @@ public class LocationExtractor {
     
     ArrayList<Location> locations = new ArrayList<Location>();
 	public LocationExtractor(){
-        
+       if (classifier == null) initClassifier(); 
     }
 
 	public LocationExtractor(Novel novel) { 
@@ -42,7 +42,8 @@ public class LocationExtractor {
         List<CoreLabel> classified = classifier.classifySentence(taggedWords);
         ArrayList<CoreLabel> ret = new ArrayList<CoreLabel>();
         for(int i = 0; i < classified.size(); i++) {
-            if(classified.get(i).category().equals("LOCATION")) {
+            System.out.println(classified.get(i).originalText());
+            if(classified.get(i).ner() != null && classified.get(i).ner().equals("LOCATION")) {
                 ret.add(classified.get(i));
             }
         }

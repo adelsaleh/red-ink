@@ -7,6 +7,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.Scanner;
 import java.util.logging.Level;
@@ -50,7 +51,7 @@ public class Novel {
         return rawText;
     }
 	
-	private ArrayList<Integer> indicesOfSentence(IWord[] sentence) {
+	public ArrayList<Integer> indicesOfSentence(IWord[] sentence) {
 		/**
 		 * EFFECTS: Finds the position of sentence in the novel
 		 * RETURNS: Index of first word in the sentence
@@ -240,5 +241,43 @@ public class Novel {
             succeeding[i-start] = words[i];
         }
         return succeeding;
+    }
+
+
+    public String toHTML(String locationClass) {
+        StringBuilder sb = new StringBuilder("<p>");
+        LocationExtractor ex = new LocationExtractor(this);
+        Location[] locations = ex.locations();
+        LinkedList<Integer> indices = new LinkedList<Integer>();
+        for(Location loc : locations) {
+            ArrayList<Integer> tmp = indicesOfSentence(loc.getLocationName());
+            for(Integer index : tmp) {
+                indices.add(index);
+                indices.add(index+loc.getLocationName().length-1);
+            }
+        }
+        Collections.sort(indices);
+        boolean before = true;
+        for(int i = 0; i < words.length; i++) {
+            
+            if(i != indices.peek()) {
+                sb.append(words[i]);
+            }
+            
+            if(i == indices.peek()) {
+                if(before){
+                    sb.append("<span class='"+locationClass+"'>");
+                    sb.append(words[i]);
+                    before = false;
+                    indices.remove();
+                }else if(!before) {
+                    sb.append(words[i]);
+                    sb.append("</span>");
+                    before = true;
+                    indices.remove();
+                }
+            }
+        }
+        return sb.append("</p>").toString();
     }
 }

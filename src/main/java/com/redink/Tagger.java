@@ -57,6 +57,7 @@ public class Tagger {
         int offset = 0;
         for(List<HasWord> sentence: sentences) {
             ArrayList<TaggedWord> tSentence = tagger.tagSentence(sentence);
+
             for(TaggedWord word : tSentence) {
                 
                 if(Pattern.matches("[a-zA-Z\\$]+", word.tag()) && !word.word().contains("'")) {

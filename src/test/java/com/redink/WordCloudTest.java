@@ -1,46 +1,47 @@
 package com.redink;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import org.junit.After;
 import static org.junit.Assert.*;
 
-import java.util.HashMap;
-
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 public class WordCloudTest {
-	HashMap<IWord, Integer> hist1;
-	HashMap<IWord, Integer> hist2;
-	HashMap<IWord, Integer> hist3;
-	HashMap<IWord, Integer> hist4;
+	IWord[] hist1;
+	IWord[] hist2;
+	IWord[] hist3;
+    IWord[] hist4;
 	WordCloud w1;
 	WordCloud w2;
 	WordCloud w3;
 	WordCloud w4;
-	
+	public IWord[] toWords(String sentence) {
+		ArrayList<IWord> words = new ArrayList<IWord>();
+		for(String s : sentence.split("-")) {
+			words.add(new StanfordWord(s, 0, ETag.FW));
+		}
+        IWord[] w = new StanfordWord[words.size()];
+        words.toArray(w);
+		return w;
+	}
 	@Before
 	public void setUp() throws Exception {
-		hist1 = new HashMap<IWord, Integer>();
-		hist1.put(new StanfordWord("valley"), 12);
-		hist1.put(new StanfordWord("river"), 17);
-		hist1.put(new StanfordWord("road"), 12);
-		hist1.put(new StanfordWord("dry"), 17);
-		hist1.put(new StanfordWord("silicon"), 12);
-		hist1.put(new StanfordWord("house"), 17);
-		hist1.put(new StanfordWord("bayan"), 12);
-		hist1.put(new StanfordWord("alaa"), 17);
-		hist1.put(new StanfordWord("moustafa"), 12);
-		hist1.put(new StanfordWord("hakuna(mattata)"), 17);
+		hist1 = new IWord[]{new StanfordWord("valley"), 
+           new StanfordWord( "river"),new StanfordWord("road"), new StanfordWord("dry"), 
+           new StanfordWord("silicon"), new StanfordWord("house"),
+           new StanfordWord("bayan"),new StanfordWord("alaa"), 
+           new StanfordWord("moustafa"), new StanfordWord("hakuna"), new StanfordWord("matata")};
 		
 		hist2 = null;
 		
-		hist3 = new HashMap<IWord, Integer>();
+		hist3 = new IWord[0];
 		
-		hist4 = new HashMap<IWord, Integer>();
-		hist4.put(new StanfordWord("Sabine"), 66);
+		hist4 = new IWord[]{new StanfordWord("Sabine")};
 		
-		w1 = new WordCloud("ali-jaber-nabatiyeh", hist1);
-		w4 = new WordCloud("abou baker-el bayrouteh-trablos", hist1);
+		w1 = new WordCloud(toWords("ali-jaber-nabatiyeh"), hist1);
+		w4 = new WordCloud(toWords("abou baker-el bayrouteh-trablos"), hist1);
 	}
 
 	@After
@@ -50,8 +51,8 @@ public class WordCloudTest {
 	@Test
 	public void testWordCloud(){
 		try{
-			w2 = new WordCloud("hussein-tahsin-lessa", hist2);
-			w3 = new WordCloud("Kanj-Fakher-Niha", hist3);
+			w2 = new WordCloud(toWords("hussein-tahsin-lessa"), hist2);
+			w3 = new WordCloud(toWords("Kanj-Fakher-Niha"), hist3);
 			fail("Cannot have empty histogram");
 		} catch(Exception e){
 		}		
@@ -59,10 +60,10 @@ public class WordCloudTest {
 	
 	@Test
 	public void testGetImageURL() {
-		assertTrue(w1.getImageURL()!=null);
-		assertFalse(w1.getImageURL().isEmpty());
-		assertTrue(w4.getImageURL()!=null);
-		assertFalse(w4.getImageURL().isEmpty());
+		assertTrue(w1.getURL()!=null);
+		assertFalse(w1.getURL().isEmpty());
+		assertTrue(w4.getURL()!=null);
+		assertFalse(w4.getURL().isEmpty());
 	}
 
 }

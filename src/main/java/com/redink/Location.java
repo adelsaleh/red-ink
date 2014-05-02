@@ -1,5 +1,7 @@
 package com.redink;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Location {
 	private double latitude;
@@ -22,7 +24,13 @@ public class Location {
 	 * MODIFIES: wordCloud 
 	 * RETURNS:  A WorldCloud containing all the interesting words   	
 	 */
-		return null; 
+        WordCloud wc=null;
+        try {
+            wc = new WordCloud(locationName, n.getSurroundingSentence(locationName, radius));
+        } catch (Exception ex) {
+            Logger.getLogger(Location.class.getName()).log(Level.SEVERE, null, ex);
+        }
+		return wc; 
 	}
 
 	public double getLatitude() { return latitude; }

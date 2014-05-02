@@ -35,7 +35,7 @@ public class LocationExtractorTest {
 
 	@Test
 	public void testIsLocation() {
-		String location = "Beirut hamra";
+		String location = "Beirut Hamra";
 		LocationExtractor ex = new LocationExtractor();
         System.out.println(Arrays.toString(toWords(location)));
 		assertTrue(ex.isLocation(toWords(location)));
