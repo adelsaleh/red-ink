@@ -19,7 +19,7 @@ import com.redink.InvalidCoordinatesException;
  */
 public class LocationTest extends TestCase {
     Novel n;
-    Word location;
+    IWord location;
     
     @Before
     public void setUp(){

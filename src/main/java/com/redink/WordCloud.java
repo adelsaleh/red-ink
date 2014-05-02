@@ -11,11 +11,11 @@ public class WordCloud {
       * AF(location, histogram): An image containing histogram.keys.
       */
     private String location;
-    private Map<Word, Integer> histogram;
+    private Map<IWord, Integer> histogram;
 
     public WordCloud(){}
 
-    public WordCloud(String location, Map<Word, Integer> histogram) {  } 
+    public WordCloud(String location, Map<IWord, Integer> histogram) {  } 
 
     
     public String getImageURL() {

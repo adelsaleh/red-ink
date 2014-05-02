@@ -23,22 +23,14 @@ public class Geolocation {
 	private Geolocation(){}
 	
 	static {
-		Properties p = new Properties();
-		try {
-			p.load(new FileInputStream(new File("configuration.properties")));
-			apiKey = p.get("com.google.geolocation").toString();
-			System.out.println(apiKey);
-			String url = p.get("com.google.geolocation.reverse.url").toString();
-			url = url.replace(keyIdentifier, apiKey);
-			reverseUrl = url;
-			url = (String)p.get("com.google.geolocation.normal.url");
-			url = url.replace(keyIdentifier, apiKey);
-			normalUrl = url;
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+        apiKey = Config.get("com.google.geolocation").toString();
+        System.out.println(apiKey);
+        String url = Config.get("com.google.geolocation.reverse.url").toString();
+        url = url.replace(keyIdentifier, apiKey);
+        reverseUrl = url;
+        url = Config.get("com.google.geolocation.normal.url");
+        url = url.replace(keyIdentifier, apiKey);
+        normalUrl = url;
 	}
 	
 	private static String getResponse(URLConnection c) throws IOException {
@@ -89,11 +81,11 @@ public class Geolocation {
         return result; 
     }
 	
-	private static Word[] filter(String formattedAddress){
+	private static IWord[] filter(String formattedAddress){
 		String[] swords = formattedAddress.split("[^a-zA-Z0-9\']+");
-		Word[] words = new Word[swords.length];
+		IWord[] words = new IWord[swords.length];
 		for(int i=0; i<words.length; i++){
-			words[i] = new Word(swords[i]);
+			words[i] = new StanfordWord(swords[i]);
 			System.out.println(swords[i]);
 		}
 		

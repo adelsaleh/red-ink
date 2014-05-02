@@ -4,12 +4,12 @@ import java.util.*;
 public class Location {
 	private double latitude;
 	private double longitude;
-	private Word[] locationName;
+	private IWord[] locationName;
 	private WordCloud wordCloud;
 
 	private Location(){}
 
-	public Location(Word[] locationName, double lat, double lng) { 
+	public Location(IWord[] locationName, double lat, double lng) { 
 		this.locationName = locationName;
 		this.latitude = lat;
 		this.longitude = lng;
@@ -29,7 +29,7 @@ public class Location {
 
 	public double getLongitude() { return longitude; }
 
-	public Word[] getLocationName() { return locationName; }
+	public IWord[] getLocationName() { return locationName; }
 
 	public WordCloud getWordCloud() { return null; }
 }

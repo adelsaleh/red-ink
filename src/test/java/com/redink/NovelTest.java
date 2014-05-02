@@ -1,37 +1,34 @@
 package com.redink;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.Ignore;
-import junit.framework.TestCase;
-
 import java.io.FileNotFoundException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
+import junit.framework.TestCase;
+import org.junit.After;
+import org.junit.AfterClass;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Ignore;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
 /**
  * Unit test for simple App.
  */
-public class NovelTest extends TestCase {
+public class NovelTest {
     
-    Novel n;
-    @Before
-    public void setUp() throws FileNotFoundException {
+    static Novel n;
+    @BeforeClass
+    public static void oneTimeSetUp() throws FileNotFoundException {
+        System.out.println(Runtime.getRuntime().maxMemory());
         n = new Novel("test_novels/3lpigs.txt");
     }
     
-    @After
-    public void tearDown() {
-
-    }
-    
-    @Test
-    public void testConstructor(){
-    	
-    }
-    
+    @Test 
     public void testGetSurroundingWordsOfSentence() {
         String[] words = new String[] {"the", "once", "upon", "a", "time", "there", "were",
                                        "who","left","their","happier", "than", 
@@ -39,8 +36,8 @@ public class NovelTest extends TestCase {
                                         "to", "rain", "the","started", "to", "feel",
                                         "an", "lnch", "the", "watched", "him", "and"
                                        };
-        Word[] sentence = {new Word("three"), new Word("little"), new Word("pigs")};
-        Word[] surroundingWords = n.getSurroundingSentence(sentence, 3);
+        IWord[] sentence = {new StanfordWord("three"), new StanfordWord("little"), new StanfordWord("pigs")};
+        IWord[] surroundingWords = n.getSurroundingSentence(sentence, 3);
 		String[] cmp = new String[surroundingWords.length];
         System.out.println(Arrays.toString(surroundingWords));
         for(int i=0; i<surroundingWords.length; i++){
@@ -58,7 +55,7 @@ public class NovelTest extends TestCase {
                               "budge", "an", "lnch", "the", "watched", "him", "and",
                               "their", "fear", "began", "to"
                              };
-        sentence = new Word[]{new Word("three"), new Word("little"), new Word("pigs")};
+        sentence = new IWord[]{new StanfordWord("three"), new StanfordWord("little"), new StanfordWord("pigs")};
         surroundingWords = n.getSurroundingSentence(sentence, 7);
 		cmp = new String[surroundingWords.length];
         for(int i=0; i<surroundingWords.length; i++){
@@ -68,11 +65,12 @@ public class NovelTest extends TestCase {
     @Test
     public void testGetSurroundingWords() {
         String[] words = new String[] {"the", "three", "little", "pigs", "once", "a", "time", "there", "were", "three", "little"};
-        Word[] surroundingWords = n.getSurroundingWords(5, 6);
+        IWord[] surroundingWords = n.getSurroundingWords(5, 6);
 		String[] cmp = new String[surroundingWords.length];
         for(int i=0; i<words.length; i++){
         	cmp[i] = surroundingWords[i].getWord();
         }
+        System.out.println(Arrays.toString(surroundingWords));
         assertTrue(Arrays.equals(cmp, words));
         
         
@@ -107,8 +105,8 @@ public class NovelTest extends TestCase {
     public void testGetSurroundingWordsByWord() {
         String[] words = new String[] {"of", "planks", "of", "seasoned", "wood", "it", "took", "him", "two", "days"};
         String[] surroundingWords = new String[words.length];
-        Word[] ws = n.getSurroundingWords("clunk", 5);
-        for(int i=0; i<words.length; i++){
+        IWord[] ws = n.getSurroundingWords("clunk", 5);
+        for(int i=0; i<ws.length; i++){
         	surroundingWords[i] = ws[i].getWord();
         }
         System.out.println(Arrays.toString(surroundingWords));

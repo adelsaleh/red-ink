@@ -1,10 +1,16 @@
 package com.redink;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Scanner;
-import java.util.Arrays;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Novel {
     /**
@@ -19,29 +25,32 @@ public class Novel {
       * Representation Invariant: words contains no punctuation and contains
       *                           uninteresting words
       */
-	private Word[] words;
+	protected IWord[] words;
+    private String rawText;
 
-
-	public Novel(String path) throws FileNotFoundException { 
-		/**
-		 * EFFECTS: Retrieves all words from the file in path and places 
-		 * 			them in words. Words containing negative characters 
-		 * THROWS: File Not Found Exception if the file does not exist
-		 */
-		ArrayList<Word> wordList = new ArrayList<Word>();
-		Scanner reader = new Scanner(new File(path));
-		reader.useDelimiter("[^a-zA-Z\']+");
-		int offset = 0;
-		while(reader.hasNext()) {
-			String word = reader.next().toLowerCase();
-			wordList.add(new Word(word, offset++));
-		}
-		reader.close();
-		words = new Word[wordList.size()];
-		wordList.toArray(words); 
-	}
+    static String readFile(String path, Charset encoding) throws IOException {
+      byte[] encoded = Files.readAllBytes(Paths.get(path));
+      return new String(encoded, encoding);
+    }
+    
+	public Novel(String path) { 
+    /**
+     * EFFECTS: Retrieves all words from the file in path and places
+     * 			them in words. Words containing negative characters
+     * THROWS: File Not Found Exception if the file does not exist
+     */
+        try {
+            rawText = readFile(path, Charset.forName("UTF-8"));
+        } catch (IOException ex) {
+            Logger.getLogger(Novel.class.getName()).log(Level.SEVERE, null, ex);
+        }
+	    words = Tagger.getTagger().tagFile(path);
+	}    
+    public String getRawText() {
+        return rawText;
+    }
 	
-	private ArrayList<Integer> indicesOfSentence(Word[] sentence) {
+	private ArrayList<Integer> indicesOfSentence(IWord[] sentence) {
 		/**
 		 * EFFECTS: Finds the position of sentence in the novel
 		 * RETURNS: Index of first word in the sentence
@@ -63,7 +72,7 @@ public class Novel {
 		return indices;
 	}
 	
-	public Word[] getSurroundingSentence(Word[] sentence, int radius) {		
+	public IWord[] getSurroundingSentence(IWord[] sentence, int radius) {		
 		/**
          * EFFECTS: Generates a list of words without duplicates (a duplicate is 
          * a word with the same string and offset) sorted by offset containing the 
@@ -72,9 +81,9 @@ public class Novel {
          * RETURNS: A list of words containing all the surrounding words
          */
         ArrayList<Integer> indices = indicesOfSentence(sentence);
-        LinkedList<Word[]> wordList = new LinkedList<Word[]>();
+        LinkedList<IWord[]> wordList = new LinkedList<IWord[]>();
         if(indices.size()==0) {
-            return new Word[]{};
+            return new IWord[]{};
         }
         wordList.push(getPrecedingWords(indices.get(0), radius));
         for(int i = 0; i < indices.size()-1; i++) {
@@ -92,7 +101,7 @@ public class Novel {
 		return concatMulti(wordList);
 	}
 
-	public Word[] getSurroundingWords(String w, int radius) { 
+	public IWord[] getSurroundingWords(String w, int radius) { 
         /**
          * EFFECTS: Generates a list of words without duplicates (a duplicate is 
          * a word with the same string and offset) sorted by offset containing the 
@@ -104,10 +113,10 @@ public class Novel {
          */
 		
         
-        return getSurroundingSentence(new Word[]{new Word(w)}, radius); 
+        return getSurroundingSentence(new IWord[]{new StanfordWord(w)}, radius); 
     }
 
-	public Word[] getSurroundingWords(int offset, int radius) { 
+	public IWord[] getSurroundingWords(int offset, int radius) { 
         /**
          * EFFECTS: Gets the words from offset-radius to offset+radius
          *          inclusive within radius radius
@@ -116,34 +125,34 @@ public class Novel {
          *          or if offset is bigger than the size of the novel.
          */
 		if(radius<=0) throw new IllegalArgumentException();
-	    Word[] preceding = getPrecedingWords(offset, radius);
-        Word[] succeeding = getSucceedingWords(offset, radius);
+	    IWord[] preceding = getPrecedingWords(offset, radius);
+        IWord[] succeeding = getSucceedingWords(offset, radius);
         
-		Word[] ret = concat(preceding, succeeding);
+		IWord[] ret = concat(preceding, succeeding);
 
         return ret; 
     }
 
-    private static Word[] concatMulti(LinkedList<Word[]> wordLists) {
+    private static IWord[] concatMulti(LinkedList<IWord[]> wordLists) {
         /**
          * EFFECTS: Returns an 
          */
         if(wordLists.size() == 0) {
-            return new Word[0];
+            return new IWord[0];
         }
         while(wordLists.size() > 1) {
-            Word[] w1 = wordLists.pop();
-            Word[] w2 = wordLists.pop();
+            IWord[] w1 = wordLists.pop();
+            IWord[] w2 = wordLists.pop();
             wordLists.push(concat(w2, w1));
         }
         return wordLists.remove();
     }
 
-    private static Word[] concat(Word[] w1, Word[] w2) {
+    private static IWord[] concat(IWord[] w1, IWord[] w2) {
         /**
          * EFFECTS: Returns an array containing all the elements
          */
-        Word[] ret = new Word[w1.length+w2.length];
+        IWord[] ret = new IWord[w1.length+w2.length];
         for(int i = 0; i < w1.length; i++) {
             ret[i] = w1[i];
         }
@@ -154,29 +163,29 @@ public class Novel {
         return ret;
     }
 
-    private Word[] getPrecedingWords(int offset, int radius) {
+    private IWord[] getPrecedingWords(int offset, int radius) {
         /**
          * EFFECTS: Gets the words preceding offset by radius
          * RETURNS: List of the words
          */
         int start = offset - radius;
         start = (start > 0) ? start : 0;
-        Word[] preceding;
-		preceding = new Word[offset-start];
+        IWord[] preceding;
+		preceding = new IWord[offset-start];
         for(int i = start; i < offset; i++) {
             preceding[i-start] = words[i];
         }
         return preceding;
     }
 
-    private Word[] removeDuplicates(Word[] words, String removeWord) {
+    private IWord[] removeDuplicates(IWord[] words, String removeWord) {
         /**
          * Removes duplicate words from words
          */
         if(words.length < 2) {
             return words;
         }
-        Word[] ret = new Word[words.length];
+        IWord[] ret = new IWord[words.length];
         int index = 0;
 		for(int i=0; i<words.length-1; i++){
 			if(!(words[i].equals(words[i+1]))
@@ -193,12 +202,12 @@ public class Novel {
         return Arrays.copyOf(ret, index);
     }
     
-    private Word[] removeDuplicates(Word[] words) {
+    private IWord[] removeDuplicates(IWord[] words) {
         /**
          * Removes duplicate words from words
          */
 
-        Word[] ret = new Word[words.length];
+        IWord[] ret = new IWord[words.length];
         int index = 0;
 		for(int i=0; i<words.length-1; i++){
 			if( !words[i].equals(words[i+1])){
@@ -214,19 +223,19 @@ public class Novel {
         return Arrays.copyOf(ret, index);
     }
 
-    private Word[] getSucceedingWords(int offset, int radius) {
+    private IWord[] getSucceedingWords(int offset, int radius) {
         /**
          * EFFECTS: Gets the words succeeding offset by radius
          * RETURNS: List of the words
          */
         int start = offset + 1;
         if(start >= words.length) {
-            return new Word[0];
+            return new IWord[0];
         }
         
         int end = offset+radius;
         end = (end < words.length-1) ? end : words.length-1;
-        Word[] succeeding = new Word[end+1-start];
+        IWord[] succeeding = new IWord[end+1-start];
         for(int i = start; i <= end; i++) {
             succeeding[i-start] = words[i];
         }

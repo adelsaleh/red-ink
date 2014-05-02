@@ -21,45 +21,45 @@ public class TestDescriptorFetcher {
 	public void tearDown() throws Exception {
 	}
 
-	public Word[] toWords(String sentence) {
-		ArrayList<Word> words = new ArrayList<Word>();
+	public IWord[] toWords(String sentence) {
+		ArrayList<IWord> words = new ArrayList<IWord>();
 		for(String s : sentence.split(" ")) {
-			words.add(new Word(s));
+			words.add(new StanfordWord(s));
 		}
-		return (Word[])words.toArray();
+		return (IWord[])words.toArray();
 	}
 	
 	@Ignore
 	public void testGetUsefulWordsAsHistogram() {
 		String sentence = "they'd be left in the cold and rain with no roof over their heads";
-		Word[] w = toWords(sentence);
+		IWord[] w = toWords(sentence);
 		DescriptorFetcher df = new DescriptorFetcher();
-		Map<Word, Integer> mp = df.getUsefulWordsAsHistogram(w);
-		assertTrue(mp.get(new Word("be")) == 1);
-		assertTrue(mp.get(new Word("with")) == 1);
-		assertTrue(mp.get(new Word("heads")) == 1);
+		Map<IWord, Integer> mp = df.getUsefulWordsAsHistogram(w);
+		assertTrue(mp.get(new StanfordWord("be")) == 1);
+		assertTrue(mp.get(new StanfordWord("with")) == 1);
+		assertTrue(mp.get(new StanfordWord("heads")) == 1);
 		df = new DescriptorFetcher(new ETag[]{ETag.NNP, ETag.CC});
 		mp = df.getUsefulWordsAsHistogram(w);
 		try {
-			mp.get(new Word("be"));
+			mp.get(new StanfordWord("be"));
 			fail();
 		}catch(Exception e){}
 	}
 	
 	public void testGetUsefulWordsAsArray() {
 		String sentence = "they'd be left in the cold and rain with no roof over their heads";
-		Word[] w = toWords(sentence);
+		IWord[] w = toWords(sentence);
 		DescriptorFetcher df = new DescriptorFetcher();
-		ArrayList<Word> words = new ArrayList<Word>();
-		for(Word word : df.getUsefulWords(w)) {
+		ArrayList<IWord> words = new ArrayList<IWord>();
+		for(IWord word : df.getUsefulWords(w)) {
 			words.add(word);
 		}
 		assertTrue(words.get(0).getWord().equals("they"));
 		assertTrue(words.get(1).getWord().equals("'d"));
 		assertTrue(words.get(2).getWord().equals("be"));
 		df = new DescriptorFetcher(new ETag[]{ETag.NNP, ETag.CC});
-		words = new ArrayList<Word>();
-		for(Word word : df.getUsefulWords(w)) {
+		words = new ArrayList<IWord>();
+		for(IWord word : df.getUsefulWords(w)) {
 			words.add(word);
 		}
 		assertTrue(words.get(0).getWord().equals("and"));

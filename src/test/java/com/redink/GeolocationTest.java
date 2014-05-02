@@ -23,7 +23,7 @@ public class GeolocationTest extends TestCase{
 
     }
 
-    private boolean locationSucceed(double lat, double lng, Word[] address) {
+    private boolean locationSucceed(double lat, double lng, IWord[] address) {
         /**
          * EFFECTS: Checks whether the location at lat,lng matches the
          *          address provided
@@ -37,7 +37,7 @@ public class GeolocationTest extends TestCase{
 			e.printStackTrace();
 		}
         if (l == null) return false;
-        Word[] locAddress = l.getLocationName();
+        IWord[] locAddress = l.getLocationName();
         for(int i = 0; i < address.length; i++) {
         	if (!address[i].getWord().equals(locAddress[i].getWord())) {
         		return false;
@@ -56,19 +56,19 @@ public class GeolocationTest extends TestCase{
          * branch coverage will be sufficient.
          */
         assertTrue(locationSucceed(40.714224,-73.961452,
-            new Word[]{new Word("277"),  new Word("Bedford"), new Word("Avenue"), new Word("Brooklyn"), 
-        						new Word("NY"), new Word("11211"), new Word("USA")}));
+            new StanfordWord[]{new StanfordWord("277"),  new StanfordWord("Bedford"), new StanfordWord("Avenue"), new StanfordWord("Brooklyn"), 
+        						new StanfordWord("NY"), new StanfordWord("11211"), new StanfordWord("USA")}));
          
-        Word[] w = new Word[]{new Word("407"), new Word("9th"), new Word("St"), new Word("Craig"), 
-        		new Word("AK"), new Word("99921"), new Word("USA")};
+        IWord[] w = new StanfordWord[]{new StanfordWord("407"), new StanfordWord("9th"), new StanfordWord("St"), new StanfordWord("Craig"), 
+        		new StanfordWord("AK"), new StanfordWord("99921"), new StanfordWord("USA")};
         assertTrue(locationSucceed(90.0,-73.961452, w));
-        assertTrue(locationSucceed(-90,180,new Word[]{new Word("Antarctica")}));
-        assertTrue(locationSucceed(-90,-180,new Word[]{new Word("Antarctica")}));
-        assertTrue(locationSucceed(-90,40,new Word[]{new Word("South"), new Word("Pole"), new Word("Station"), 
-        		new Word("Antarctica")}));
+        assertTrue(locationSucceed(-90,180,new StanfordWord[]{new StanfordWord("Antarctica")}));
+        assertTrue(locationSucceed(-90,-180,new StanfordWord[]{new StanfordWord("Antarctica")}));
+        assertTrue(locationSucceed(-90,40,new StanfordWord[]{new StanfordWord("South"), new StanfordWord("Pole"), new StanfordWord("Station"), 
+        		new StanfordWord("Antarctica")}));
         
-        assertFalse(locationSucceed(40, -180, new Word[]{new Word("")}));
-        assertFalse(locationSucceed(40, 180, new Word[]{new Word("")}));
+        assertFalse(locationSucceed(40, -180, new StanfordWord[]{new StanfordWord("")}));
+        assertFalse(locationSucceed(40, 180, new StanfordWord[]{new StanfordWord("")}));
 
     }
     

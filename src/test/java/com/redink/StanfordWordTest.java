@@ -8,30 +8,30 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-import com.redink.Word;
+import com.redink.StanfordWord;
 
 /**
  * Unit test for simple App.
  */
-public class WordTest extends TestCase {
+public class StanfordWordTest extends TestCase {
 
-    Word w1;
-    Word w2;
-    Word w3;
-    Word w4;
-    Word w5;
-    Word w6;
-    Word w7;
+    StanfordWord w1;
+    StanfordWord w2;
+    StanfordWord w3;
+    StanfordWord w4;
+    StanfordWord w5;
+    StanfordWord w6;
+    StanfordWord w7;
     
     @Before
     public void setUp() {
-        w1 = new Word("hello", 542);
-        w2 = new Word("hello", 542);
-        w3 = new Word("hello", 340);
-        w4 = new Word("how", 542);
-        w5 = new Word("how", 302);
-        w6 = new Word("hello");
-        w7 = new Word("how");
+        w1 = new StanfordWord("hello", 542);
+        w2 = new StanfordWord("hello", 542);
+        w3 = new StanfordWord("hello", 340);
+        w4 = new StanfordWord("how", 542);
+        w5 = new StanfordWord("how", 302);
+        w6 = new StanfordWord("hello");
+        w7 = new StanfordWord("how");
     }
     
     @After
@@ -42,20 +42,9 @@ public class WordTest extends TestCase {
     @Ignore("Not implemented yet")
     public void testWord() {
     	try{
-    		Word w10 = new Word(null);
+    		StanfordWord w10 = new StanfordWord(null);
     		fail("Cannot have null string as parameter");
     	}catch(Exception e) {}    	
-    }
-    
-    @Ignore("Not implemented yet")
-    public void testIsWord() {
-    	assertTrue(Word.isWord("abracadbra"));
-    	assertTrue(Word.isWord("abracadbra9"));
-    	assertTrue(Word.isWord("abracadbra'"));
-    	assertTrue(Word.isWord("abracadbra9'"));
-    	assertFalse(Word.isWord(""));
-    	assertFalse(Word.isWord("][fw"));
-    	assertFalse(Word.isWord("\"heuheuheuhe\""));
     }
     
     @Ignore("Not implemented yet")

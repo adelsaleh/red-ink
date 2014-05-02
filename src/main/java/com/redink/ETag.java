@@ -1,8 +1,7 @@
 package com.redink;
 
 public enum ETag {
-    CC, CD, DT, EX, FW, IN, JJ, JJR, JJS, LS, MD, 
-    NN, NNS, NNP, NNPS, PDT, POS, PRP, PRP$, RB, RBR,
-    RBS, RP, SYM, TO, UH, VB, CBD, CBG, VBN,
-    VBP, VBZ, WDT, WP, WP$, WRB
-}
+    NNP,CD,NNS,JJ,MD,VB,DT,NN,IN,VBZ,VBG,CC,VBD,VBN,RB,TO,PRP,RBR,
+    WDT,VBP,RP,PRP$,JJS,POS,EX,WP,JJR,WRB,NNPS,WP$,LRB,RRB,PDT,RBS,FW,UH,
+    SYM, LS 
+   }

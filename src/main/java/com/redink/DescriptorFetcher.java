@@ -10,11 +10,17 @@ public class DescriptorFetcher {
 	
 	private ETag[] allowedTags;
 
-	public DescriptorFetcher(){}
+	public DescriptorFetcher(){
+        // NOTE: Please compile with oracle JDK since values is a compiler
+        //       specific function.
+        allowedTags = ETag.values();
+    }
 
-	public DescriptorFetcher(ETag[] allowedTags) {  } 
+	public DescriptorFetcher(ETag[] allowedTags) { 
+        this.allowedTags = allowedTags;
+    } 
 
-	public boolean isUseful(Word word) {
+	public boolean isUseful(IWord word) {
         /**
          * EFFECTS: Checks whether a word is useful according the tags
          *          we specified
@@ -26,36 +32,37 @@ public class DescriptorFetcher {
         return false; 
     }
 
-	public Word[] getUsefulWords(Word[] sentence) {
+	public IWord[] getUsefulWords(IWord[] sentence) {
         /**
          * EFFECTS: Filters the undesirable words from the sentence based
          * 			on allowed tag
          * RETURNS: An iterator that iterates over the useful words
          *          in the sentence
          */
-		ArrayList<Word> usefulWords = new ArrayList<Word>();
-		for(Word word: sentence){
+		ArrayList<IWord> usefulWords = new ArrayList<IWord>();
+		for(IWord word: sentence){
 			for(ETag tag: allowedTags){
-				if(word.getTag().equals(tag))
+				if(word.getTag().equals(tag)) {
 					usefulWords.add(word);
+                    break;
+                }
 			}
 		}
-		return (Word[]) usefulWords.toArray();
+		return (IWord[]) usefulWords.toArray();
 		
     }
 
-	public Map<Word, Integer> getUsefulWordsAsHistogram(Word[] sentence) { 
+	public Map<IWord, Integer> getUsefulWordsAsHistogram(IWord[] sentence) { 
         /**
          * EFFECTS: generates a histogram containing the number of occurrences
          *          of each word in the sentence 
          * RETURNS: A map where the key is the word and the value is 
          * 			the number of characters
          */
-		Map<Word, Integer> histogram = new HashMap<Word, Integer>();
-		for(Word word: sentence){
+		Map<IWord, Integer> histogram = new HashMap<IWord, Integer>();
+		for(IWord word: sentence){
 			if(histogram.containsKey(word)) {
-				int count = histogram.get(word);
-				count++;
+				int count = histogram.get(word)+1;
 				histogram.put(word, count);
 			} else {
 				histogram.put(word, 1);
