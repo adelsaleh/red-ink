@@ -39,7 +39,7 @@ public class TestDescriptorFetcher {
 		assertTrue(mp.get(new StanfordWord("be")) == 1);
 		assertTrue(mp.get(new StanfordWord("with")) == 1);
 		assertTrue(mp.get(new StanfordWord("heads")) == 1);
-		df = new DescriptorFetcher(new ETag[]{ETag.NNP, ETag.CC});
+		df = new DescriptorFetcher(new String[]{"NNP", "CC"});
 		mp = df.getUsefulWordsAsHistogram(w);
 		try {
 			mp.get(new StanfordWord("be"));

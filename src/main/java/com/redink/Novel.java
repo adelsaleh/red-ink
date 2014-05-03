@@ -26,8 +26,8 @@ public class Novel {
       * Representation Invariant: words contains no punctuation and contains
       *                           uninteresting words
       */
-	protected IWord[] words;
-    private String rawText;
+	private IWord[] words;
+    protected String rawText;
 
     static String readFile(String path, Charset encoding) throws IOException {
       byte[] encoded = Files.readAllBytes(Paths.get(path));
@@ -245,7 +245,7 @@ public class Novel {
 
 
     public String toHTML(String locationClass) {
-        StringBuilder sb = new StringBuilder("'<p>");
+        StringBuilder sb = new StringBuilder("<p>");
         LocationExtractor ex = new LocationExtractor(this);
         Location[] locations = ex.locations();
         LinkedList<Integer> indices = new LinkedList<Integer>();
@@ -264,7 +264,7 @@ public class Novel {
                     sb.append(words[i].getWord());
                 } else {
                     if(before){
-                        sb.append("<span class=\\\'"+locationClass+"\\\'>");
+                        sb.append("<span class='"+locationClass+"'>");
                         sb.append(words[i].getWord());
                         before = false;
                         indices.remove();
@@ -280,7 +280,7 @@ public class Novel {
            }
            sb.append(" ");
         }
-        sb.append("</p>'");
+        sb.append("</p>");
         return sb.toString();
     }
 }

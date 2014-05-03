@@ -81,5 +81,4 @@ public class DescriptorFetcher {
 		}
 		return histogram; 
 	}
-
 }

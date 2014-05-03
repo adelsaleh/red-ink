@@ -1,7 +1,15 @@
 package com.redink;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.net.MalformedURLException;
+import java.nio.charset.Charset;
+import java.nio.charset.spi.CharsetProvider;
+import java.nio.file.Files;
+import java.nio.file.OpenOption;
+import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Application;
@@ -21,6 +29,7 @@ import javafx.scene.web.WebView;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import netscape.javascript.JSObject;
+import org.w3c.dom.Document;
  
  
 public class Client extends Application {
@@ -85,10 +94,17 @@ class Browser extends Region {
             new ChangeListener<Worker.State>() {
                 public void changed(ObservableValue ov, Worker.State oldState, Worker.State newState) {
                     String html = n.toHTML("label label-primary");
-                    html = html.replace("\"", "\\\"");
-                    System.out.println(html);
+                    try {
+                        PrintWriter out = new PrintWriter("/tmp/text");
+                        out.write(html);
+                        out.close();
+                    } catch (FileNotFoundException ex) {
+                        Logger.getLogger(Browser.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    Document d = webEngine.getDocument();
                     if (newState == Worker.State.SUCCEEDED) {                        
-                        webEngine.executeScript("document.getElementById('novelDisplay').innerHTML="+html);
+                        d.getElementById("novelDisplay").setAttribute("innerHTML", html);
+                        //webEngine.executeScript("document.getElementById('novelDisplay').innerHTML="+html);
                     }
 
                 }

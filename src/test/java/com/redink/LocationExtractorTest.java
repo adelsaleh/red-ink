@@ -26,7 +26,7 @@ public class LocationExtractorTest {
 	public IWord[] toWords(String sentence) {
 		ArrayList<IWord> words = new ArrayList<IWord>();
 		for(String s : sentence.split(" ")) {
-			words.add(new StanfordWord(s, 0, ETag.FW));
+			words.add(new StanfordWord(s, 0, "FW"));
 		}
         IWord[] w = new StanfordWord[words.size()];
         words.toArray(w);

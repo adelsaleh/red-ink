@@ -1,6 +1,7 @@
 package com.redink;
 import edu.stanford.nlp.ie.AbstractSequenceClassifier;
 import edu.stanford.nlp.ie.crf.CRFClassifier;
+import edu.stanford.nlp.ling.CoreAnnotations;
 import edu.stanford.nlp.ling.CoreLabel;
 import edu.stanford.nlp.ling.TaggedWord;
 import java.util.*;
@@ -46,6 +47,7 @@ public class LocationExtractor {
             if(taggedWords.get(taggedWords.size()-1).tag() == ".") {
                 List<CoreLabel> tmp = classifier.classifySentence(tmp1);
                 for(CoreLabel cb: tmp) {
+                    System.err.println(cb.tag());
                     classified.add(cb);
                 }
                 tmp1.clear();
@@ -53,7 +55,7 @@ public class LocationExtractor {
         }
         ArrayList<CoreLabel> ret = new ArrayList<CoreLabel>();
         for(int i = 0; i < classified.size(); i++) {
-            System.out.println(classified.get(i).originalText());
+            System.out.println(classified.get(i).tag());
             if(classified.get(i).ner() != null && classified.get(i).ner().equals("LOCATION")) {
                 ret.add(classified.get(i));
             }
@@ -64,12 +66,32 @@ public class LocationExtractor {
         }
         return locations;
     } 
+
+    public Location[] extractLocationFromRawText(String text) {
+        List<List<CoreLabel>> ners = classifier.classify(text);
+        ArrayList<CoreLabel> ret = new ArrayList<CoreLabel>();
+        for(List<CoreLabel> classified : ners) { 
+            for(int i = 0; i < classified.size(); i++) {
+                String ner = classified.get(i).get(CoreAnnotations.AnswerAnnotation.class);
+                if(ner != null && ner.equals("LOCATION")) {
+                    ret.add(classified.get(i));
+                }
+            }
+            
+        }
+        Location[] locations = new Location[ret.size()];
+        for(int i = 0; i < locations.length; i++) {
+            locations[i] = Geolocation.getLocation(ret.get(i).originalText());
+        }
+        return locations;
+    }
+
 	public Location[] locations() { 
 	/**
 	 * EFFECTS: Retrieves all locations from novel
 	 * RETURNS: An Iterator over the locations found in the novel	
 	 */
-        return extractLocationFromWordArray(novel.words);
+        return extractLocationFromRawText(novel.rawText);
 	}
 
 	public boolean isLocation(IWord[] words) { 

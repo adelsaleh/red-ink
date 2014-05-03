@@ -24,7 +24,6 @@ public class Geolocation {
 	
 	static {
         apiKey = Config.get("com.google.geolocation").toString();
-        System.out.println(apiKey);
         String url = Config.get("com.google.geolocation.reverse.url").toString();
         url = url.replace(keyIdentifier, apiKey);
         reverseUrl = url;
@@ -71,7 +70,6 @@ public class Geolocation {
 			conn.disconnect();
 			if(obj.getString("status").equals("OK")) {
 				String formattedAddress = obj.getJSONArray("results").getJSONObject(0).getString("formatted_address");
-				System.out.println(formattedAddress);
 				result = new Location(filter(formattedAddress), latitude, longitude);
 			}
 		} catch (IOException e) {
@@ -86,7 +84,6 @@ public class Geolocation {
 		IWord[] words = new IWord[swords.length];
 		for(int i=0; i<words.length; i++){
 			words[i] = new StanfordWord(swords[i]);
-			System.out.println(swords[i]);
 		}
 		
 		return words;

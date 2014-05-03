@@ -52,7 +52,7 @@ public class StanfordWord implements IWord{
 	/**
 	 * REQUIRES: word is non empty or null	
 	 */
-        word.setWord(word.word().replace("\'", "\\\'"));
+        word.setWord(word.word());
         this.taggedWord = word;
 		this.offset = offset;
 	}
