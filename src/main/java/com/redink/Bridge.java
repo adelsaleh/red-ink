@@ -12,8 +12,8 @@ package com.redink;
  */
 public class Bridge {
         public void func(String path) {
-            Novel n = new Novel(path);
-            
+            final Novel n = new Novel(path);
+            Client.b.openNovelView(n);
         }
     }
 //

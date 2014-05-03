@@ -13,6 +13,6 @@ package com.redink;
 public interface IWord extends Comparable<IWord>{
     public String getWord();
 	public int getOffset();
-    public ETag getTag();
+    public String getTag();
     public boolean equals(IWord word);
 }

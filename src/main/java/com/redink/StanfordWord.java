@@ -52,25 +52,23 @@ public class StanfordWord implements IWord{
 	/**
 	 * REQUIRES: word is non empty or null	
 	 */
-        this.tag = ETag.valueOf(word.tag());
-        word.setWord(word.word().toLowerCase());
+        word.setWord(word.word().replace("\'", "\\\'"));
         this.taggedWord = word;
 		this.offset = offset;
 	}
-	public StanfordWord(String word, int offset, ETag tag) {  
+	public StanfordWord(String word, int offset, String tag) {  
 	/**
 	 * REQUIRES: word is non empty or null	
 	 */
 		if(Pattern.matches(" *", word)) throw new IllegalArgumentException("Word cannot be empty");
-        this.tag = tag;
-        this.taggedWord = new TaggedWord(word.toLowerCase(), tag.toString());
+        this.taggedWord = new TaggedWord(word, tag);
 		this.offset = offset;
 	} 
 	
 
 	public String getWord() { return taggedWord.word(); }
 	public int getOffset() { return offset; }
-	public ETag getTag() { return tag; }
+	public String getTag() { return taggedWord.tag(); }
 	
 	@Override
 	public int hashCode() {

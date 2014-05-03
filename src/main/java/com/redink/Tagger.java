@@ -60,7 +60,7 @@ public class Tagger {
 
             for(TaggedWord word : tSentence) {
                 
-                if(Pattern.matches("[a-zA-Z\\$]+", word.tag()) && !word.word().contains("'")) {
+                if(/*Pattern.matches("[a-zA-Z\\$]+", word.tag()) && !word.word().contains("'")*/ true) {
                     words.add(new StanfordWord(word, offset));
                     offset++;
                 }

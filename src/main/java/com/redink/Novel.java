@@ -245,7 +245,7 @@ public class Novel {
 
 
     public String toHTML(String locationClass) {
-        StringBuilder sb = new StringBuilder("<p>");
+        StringBuilder sb = new StringBuilder("'<p>");
         LocationExtractor ex = new LocationExtractor(this);
         Location[] locations = ex.locations();
         LinkedList<Integer> indices = new LinkedList<Integer>();
@@ -259,25 +259,28 @@ public class Novel {
         Collections.sort(indices);
         boolean before = true;
         for(int i = 0; i < words.length; i++) {
-            
-            if(i != indices.peek()) {
-                sb.append(words[i]);
-            }
-            
-            if(i == indices.peek()) {
-                if(before){
-                    sb.append("<span class='"+locationClass+"'>");
-                    sb.append(words[i]);
-                    before = false;
-                    indices.remove();
-                }else if(!before) {
-                    sb.append(words[i]);
-                    sb.append("</span>");
-                    before = true;
-                    indices.remove();
+           if(indices.size() != 0) { 
+                if(i != indices.peek()) {
+                    sb.append(words[i].getWord());
+                } else {
+                    if(before){
+                        sb.append("<span class=\\\'"+locationClass+"\\\'>");
+                        sb.append(words[i].getWord());
+                        before = false;
+                        indices.remove();
+                    }else if(!before) {
+                        sb.append(words[i].getWord());
+                        sb.append("</span>");
+                        before = true;
+                        indices.remove();
+                    }
                 }
-            }
+           }else{
+               sb.append(words[i].getWord());
+           }
+           sb.append(" ");
         }
-        return sb.append("</p>").toString();
+        sb.append("</p>'");
+        return sb.toString();
     }
 }

@@ -25,6 +25,7 @@ public class LocationExtractor {
     }
 
 	public LocationExtractor(Novel novel) { 
+       if (classifier == null) initClassifier(); 
         this.novel = novel;
     }
 
@@ -34,12 +35,22 @@ public class LocationExtractor {
     
     private Location[] extractLocationFromWordArray(IWord[] words) {
         ArrayList<TaggedWord> taggedWords = new ArrayList<TaggedWord>();
+        List<CoreLabel> classified =new ArrayList<CoreLabel>(); 
+        ArrayList<TaggedWord> tmp1 = new ArrayList<TaggedWord>();
         for(int i = 0; i < words.length; i++) {
             IWord word = words[i];
             System.out.println(word);
-            taggedWords.add(new TaggedWord(word.getWord(), word.getTag().toString()));
+            TaggedWord tw = new TaggedWord(word.getWord(), word.getTag().toString());
+            taggedWords.add(tw);
+            tmp1.add(tw);
+            if(taggedWords.get(taggedWords.size()-1).tag() == ".") {
+                List<CoreLabel> tmp = classifier.classifySentence(tmp1);
+                for(CoreLabel cb: tmp) {
+                    classified.add(cb);
+                }
+                tmp1.clear();
+            }
         }
-        List<CoreLabel> classified = classifier.classifySentence(taggedWords);
         ArrayList<CoreLabel> ret = new ArrayList<CoreLabel>();
         for(int i = 0; i < classified.size(); i++) {
             System.out.println(classified.get(i).originalText());

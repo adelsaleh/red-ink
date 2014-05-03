@@ -8,15 +8,15 @@ public class DescriptorFetcher {
      *           based on tags
      */
 	
-	private ETag[] allowedTags;
+	private String[] allowedTags;
 
 	public DescriptorFetcher(){
         // NOTE: Please compile with oracle JDK since values is a compiler
         //       specific function.
-        allowedTags = ETag.values();
+        allowedTags = null;
     }
 
-	public DescriptorFetcher(ETag[] allowedTags) { 
+	public DescriptorFetcher(String[] allowedTags) { 
         this.allowedTags = allowedTags;
     } 
 
@@ -26,6 +26,7 @@ public class DescriptorFetcher {
          *          we specified
          * RETURNS: True if useful, false otherwise
          */
+        if(allowedTags == null) return true;
 		for(int i=0; i<allowedTags.length; i++){
 			if(word.getTag()==allowedTags[i]) return true;
 		}
@@ -41,7 +42,7 @@ public class DescriptorFetcher {
          */
 		ArrayList<IWord> usefulWords = new ArrayList<IWord>();
 		for(IWord word: sentence){
-			for(ETag tag: allowedTags){
+			for(String tag: allowedTags){
 				if(word.getTag().equals(tag)) {
 					usefulWords.add(word);
                     break;

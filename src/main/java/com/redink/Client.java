@@ -25,10 +25,11 @@ import netscape.javascript.JSObject;
  
 public class Client extends Application {
     private Scene scene;
+    public static Browser b = new Browser();
     @Override public void start(Stage stage) {
         // create the scene
         stage.setTitle("Web View");
-        scene = new Scene(new Browser(),750,500, Color.web("#666970"));
+        scene = new Scene(b,750,500, Color.web("#666970"));
         stage.setScene(scene);        
         stage.show();
     }
@@ -74,6 +75,29 @@ class Browser extends Region {
         Region spacer = new Region();
         HBox.setHgrow(spacer, Priority.ALWAYS);
         return spacer;
+    }
+
+    public void openNovelView(final Novel n) {
+        File f = new File("src/main/html/novel.html");
+        try {
+            webEngine.load(f.toURI().toURL().toString());
+            webEngine.getLoadWorker().stateProperty().addListener(
+            new ChangeListener<Worker.State>() {
+                public void changed(ObservableValue ov, Worker.State oldState, Worker.State newState) {
+                    String html = n.toHTML("label label-primary");
+                    html = html.replace("\"", "\\\"");
+                    System.out.println(html);
+                    if (newState == Worker.State.SUCCEEDED) {                        
+                        webEngine.executeScript("document.getElementById('novelDisplay').innerHTML="+html);
+                    }
+
+                }
+            });
+            
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(Browser.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        //JSObject jso = (JSObject)webEngine.executeScript("setNovelDisplay("+/**/"'kmfls'"+");");
     }
 
  
