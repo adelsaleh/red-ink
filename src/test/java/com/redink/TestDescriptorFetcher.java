@@ -1,5 +1,4 @@
 package com.redink;
-
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
@@ -7,9 +6,7 @@ import java.util.Map;
 
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
-
-import java.util.*;
+import org.junit.Test;
 
 public class TestDescriptorFetcher {
 
@@ -26,10 +23,14 @@ public class TestDescriptorFetcher {
 		for(String s : sentence.split(" ")) {
 			words.add(new StanfordWord(s));
 		}
-		return (IWord[])words.toArray();
+		IWord[] words1 = new IWord[words.size()];
+		for(int i=0; i<words.size(); i++){
+			words1[i] = words.get(i);
+		}
+		return words1;
 	}
 	
-	@Ignore
+	@Test
 	public void testGetUsefulWordsAsHistogram() {
 		String sentence = "they'd be left in the cold and rain with no roof over their heads";
 		IWord[] w = toWords(sentence);
@@ -46,6 +47,7 @@ public class TestDescriptorFetcher {
 		}catch(Exception e){}
 	}
 	
+	@Test
 	public void testGetUsefulWordsAsArray() {
 		String sentence = "they'd be left in the cold and rain with no roof over their heads";
 		IWord[] w = toWords(sentence);
