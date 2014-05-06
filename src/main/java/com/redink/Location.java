@@ -1,5 +1,4 @@
 package com.redink;
-import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -9,7 +8,6 @@ public class Location {
 	private IWord[] locationName;
 	private WordCloud wordCloud;
 
-	private Location(){}
 
 	public Location(IWord[] locationName, double lat, double lng) { 
 		this.locationName = locationName;
@@ -39,5 +37,5 @@ public class Location {
 
 	public IWord[] getLocationName() { return locationName; }
 
-	public WordCloud getWordCloud() { return null; }
+	public WordCloud getWordCloud() { return wordCloud; }
 }

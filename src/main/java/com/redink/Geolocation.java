@@ -1,11 +1,7 @@
 package com.redink;
 import java.io.*;
 import java.net.*;
-import java.util.*;
-
 import javax.net.ssl.HttpsURLConnection;
-
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class Geolocation {
