@@ -69,19 +69,26 @@ public class LocationExtractor {
 
     public Location[] extractLocationFromRawText(String text) {
         List<List<CoreLabel>> ners = classifier.classify(text);
-        ArrayList<CoreLabel> ret = new ArrayList<CoreLabel>();
-        for(List<CoreLabel> classified : ners) { 
-            for(int i = 0; i < classified.size(); i++) {
-                String ner = classified.get(i).get(CoreAnnotations.AnswerAnnotation.class);
+        ArrayList<List<CoreLabel>> ret = new ArrayList<List<CoreLabel>>();
+        for(List<CoreLabel> classified : ners) {
+            ArrayList<CoreLabel> bla = new ArrayList<CoreLabel>();
+            for(CoreLabel cl : classified) {
+                String ner = cl.get(CoreAnnotations.AnswerAnnotation.class);
                 if(ner != null && ner.equals("LOCATION")) {
-                    ret.add(classified.get(i));
+                    bla.add(cl);
                 }
             }
+            if(bla.size()>0)
+            ret.add(bla);
             
         }
         Location[] locations = new Location[ret.size()];
         for(int i = 0; i < locations.length; i++) {
-            locations[i] = Geolocation.getLocation(ret.get(i).originalText());
+            String txt = "";
+            for(int j = 0; j < ret.get(i).size();j++) {
+                txt+= ret.get(i).get(j).originalText()+"+";
+            }
+            locations[i] = Geolocation.getLocation(txt);
         }
         return locations;
     }

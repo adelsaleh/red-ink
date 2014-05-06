@@ -1,6 +1,4 @@
 package com.redink;
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
@@ -8,8 +6,8 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedList;
-import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -61,15 +59,17 @@ public class Novel {
 		for(int i = 0; i < words.length; i++) {
             if(sentenceIndex == sentence.length) {
 				indices.add(i-sentenceIndex);
+                indices.add(i-1);
                 sentenceIndex = 0;
 			}
-			if(sentence[sentenceIndex].getWord().equals(words[i].getWord())) {
+			if(sentence[sentenceIndex].getWord().toLowerCase().equals(words[i].getWord().toLowerCase())) {
 				sentenceIndex++;
 			}else{
                 sentenceIndex = 0;
             }
 			
 		}
+        System.out.println(Arrays.toString(indices.toArray()));
 		return indices;
 	}
 	
@@ -88,7 +88,7 @@ public class Novel {
         }
         wordList.push(getPrecedingWords(indices.get(0), radius));
         for(int i = 0; i < indices.size()-1; i++) {
-            int index = indices.get(i);
+            int index = indices.get(i-1);
             int nextIndex = indices.get(i+1);
             if(nextIndex-index > radius) {
                 wordList.push(getSucceedingWords(index+sentence.length-1, radius));
@@ -249,30 +249,60 @@ public class Novel {
         LocationExtractor ex = new LocationExtractor(this);
         Location[] locations = ex.locations();
         LinkedList<Integer> indices = new LinkedList<Integer>();
+        Comparator<Location> cmpLoc = new Comparator<Location>(){
+            public int compare(Location l1, Location l2) {
+                if(l1 == l2) return 0;
+                if(l1 == null) return -1;
+                if(l2 == null) return 1;
+                return Arrays.toString(l1.getLocationName()).compareTo(Arrays.toString(l2.getLocationName()));
+            }
+        };
+        ArrayList<Location> locs = new ArrayList<Location>();
+        Collections.addAll(locs, locations);
+        Collections.sort(locs, cmpLoc);
+        int j = 0;
+        while(j<locs.size()-1) {
+            if(cmpLoc.compare(locs.get(j), locs.get(j+1)) == 0) {
+                locs.remove(j);
+            }else{
+                j++;
+            }
+        }
+        System.out.println(Arrays.toString(locs.toArray()));
+        locations = new Location[locs.size()];
+        locs.toArray(locations);
         for(Location loc : locations) {
-            ArrayList<Integer> tmp = indicesOfSentence(loc.getLocationName());
-            for(Integer index : tmp) {
-                indices.add(index);
-                indices.add(index+loc.getLocationName().length-1);
+            if(loc != null) {
+                System.out.println(Arrays.toString(loc.getLocationName()));
+                ArrayList<Integer> tmp = indicesOfSentence(loc.getLocationName());
+                for(Integer index : tmp) {
+                    indices.add(index);
+                }
             }
         }
         Collections.sort(indices);
+
         boolean before = true;
         for(int i = 0; i < words.length; i++) {
            if(indices.size() != 0) { 
-                if(i != indices.peek()) {
+                if(i != indices.get(0)) {
                     sb.append(words[i].getWord());
                 } else {
                     if(before){
-                        sb.append("<span class='"+locationClass+"'>");
+                        sb.append("<span class=\'"+locationClass+"\'>");
                         sb.append(words[i].getWord());
                         before = false;
-                        indices.remove();
+                        if(indices.size() > 1 && indices.get(1)-indices.get(0) == 0) {
+                            sb.append("</span>");
+                            indices.remove(0);
+                            before = true;
+                        }
+                        indices.remove(0);
                     }else if(!before) {
                         sb.append(words[i].getWord());
                         sb.append("</span>");
                         before = true;
-                        indices.remove();
+                        indices.remove(0);
                     }
                 }
            }else{

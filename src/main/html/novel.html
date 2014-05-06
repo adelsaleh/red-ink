@@ -36,7 +36,7 @@
         </script>
     </head>
 
-    <body>
+    <body id="lalala">
         <div class="container" style="margin-top: 20px;">
 
             <div class="row">
@@ -119,6 +119,14 @@
             document.getElementById("radius").onmouseup = function() {
                 document.getElementById("range-val").innerHTML = this.value;
             }
+            
+    document.forms[0].onsubmit = function(e) {
+            
+            if(e.preventDefault) e.preventDefault();
+            //Get selected tags
+            var input = document.getElementById("input").value;
+            java.getNovel(input);
+        }
         </script>
 
     </body>

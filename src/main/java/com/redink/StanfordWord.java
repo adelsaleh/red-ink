@@ -77,7 +77,7 @@ public class StanfordWord implements IWord{
 
 	@Override
 	public String toString(){
-		return getWord() + ": " + getOffset();
+		return getWord() + " ";
 	}
 	
     public boolean equals(IWord w2) {	

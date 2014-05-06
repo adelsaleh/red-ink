@@ -31,8 +31,10 @@ public class WordCloud {
         for(IWord word : sentence) {
             String w = word.getWord();
             sb.append(w);
+            sb.append(" ");
         }
         HttpResponse<JsonNode> request = null;
+        System.out.println(sb.toString());
         try {
              request = Unirest.post("https://gatheringpoint-word-cloud-maker.p.mashape.com/index.php")
                             .header("X-Mashape-Authorization", Config.get(keyConfig))
@@ -58,6 +60,7 @@ public class WordCloud {
      *         InvalidArgumentsException in case
      *         either histogram or location is empty.
      */
+        System.out.println(this.url);
         return this.url;
     }
 }

@@ -102,7 +102,9 @@ public class Geolocation {
 			url = new URL(newUrl);
 			HttpsURLConnection conn = (HttpsURLConnection)url.openConnection();
 			conn.connect();
+            System.out.println(conn.getResponseCode());
 			if(conn.getResponseCode() != 200) {
+                System.err.println(getResponse(conn));
 				throw new IOException("Invalid response code");
 			}
 			System.out.println(newUrl);

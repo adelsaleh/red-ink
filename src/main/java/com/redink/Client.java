@@ -1,15 +1,11 @@
 package com.redink;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.MalformedURLException;
-import java.nio.charset.Charset;
-import java.nio.charset.spi.CharsetProvider;
-import java.nio.file.Files;
-import java.nio.file.OpenOption;
-import java.nio.file.Path;
-import java.nio.file.StandardOpenOption;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Application;
@@ -26,10 +22,14 @@ import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
-import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import netscape.javascript.JSObject;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.w3c.dom.Document;
+import org.xml.sax.SAXException;
  
  
 public class Client extends Application {
@@ -69,6 +69,7 @@ class Browser extends Region {
          webEngine.getLoadWorker().stateProperty().addListener(
             new ChangeListener<Worker.State>() {
                 public void changed(ObservableValue ov, Worker.State oldState, Worker.State newState) {
+                    System.out.println(ov.getValue());
                     if (newState == Worker.State.SUCCEEDED) {                        
                         JSObject jso = (JSObject) webEngine.executeScript("window");
                         jso.setMember("java", new Bridge());
@@ -86,36 +87,57 @@ class Browser extends Region {
         return spacer;
     }
 
+    public Document loadXMLFromString(String xml) throws ParserConfigurationException 
+    {
+        try {
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder builder = factory.newDocumentBuilder();
+            
+            return builder.parse(new ByteArrayInputStream(xml.getBytes()));
+        } catch (SAXException ex) {
+            Logger.getLogger(Browser.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(Browser.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+
     public void openNovelView(final Novel n) {
         File f = new File("src/main/html/novel.html");
         try {
             webEngine.load(f.toURI().toURL().toString());
-            webEngine.getLoadWorker().stateProperty().addListener(
-            new ChangeListener<Worker.State>() {
+            ChangeListener cl = new ChangeListener<Worker.State>() {
                 public void changed(ObservableValue ov, Worker.State oldState, Worker.State newState) {
-                    String html = n.toHTML("label label-primary");
+                    
+                    String html = n.toHTML("label label-primary").replace("``", "\"").replace("''", "\"").replace("'", "\\\'");
+                    
+                    Document d = webEngine.getDocument();
+                    if (newState == Worker.State.SUCCEEDED) {                        
+                        webEngine.executeScript("document.getElementById('novelDisplay').innerHTML='"+html+"'");
+
+                    }
                     try {
                         PrintWriter out = new PrintWriter("/tmp/text");
-                        out.write(html);
+                        String htmlout = (String) webEngine.executeScript("document.getElementById('lalala').innerHTML");
+                        out.write(htmlout);
                         out.close();
                     } catch (FileNotFoundException ex) {
                         Logger.getLogger(Browser.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                    Document d = webEngine.getDocument();
-                    if (newState == Worker.State.SUCCEEDED) {                        
-                        d.getElementById("novelDisplay").setAttribute("innerHTML", html);
-                        //webEngine.executeScript("document.getElementById('novelDisplay').innerHTML="+html);
-                    }
-
+                    webEngine.getLoadWorker().stateProperty().removeListener(this);
                 }
-            });
+            };
+            webEngine.getLoadWorker().stateProperty().addListener(cl);
             
         } catch (MalformedURLException ex) {
             Logger.getLogger(Browser.class.getName()).log(Level.SEVERE, null, ex);
         }
         //JSObject jso = (JSObject)webEngine.executeScript("setNovelDisplay("+/**/"'kmfls'"+");");
     }
+    
+    public void openMapView () {
 
+    }
  
     @Override protected void layoutChildren() {
         double w = getWidth();

@@ -40,4 +40,10 @@ public class Location {
 	public IWord[] getLocationName() { return locationName; }
 
 	public WordCloud getWordCloud() { return null; }
+
+    @Override
+    public String toString() {
+        return Arrays.toString(locationName);
+        
+    }
 }

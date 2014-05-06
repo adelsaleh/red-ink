@@ -11,9 +11,13 @@ package com.redink;
  * @author bayan
  */
 public class Bridge {
-        public void func(String path) {
+        public void getNovel(String path) {
             final Novel n = new Novel(path);
             Client.b.openNovelView(n);
+        }
+
+        public void loadMap(int radius, String[] tags) {
+            
         }
     }
 //
