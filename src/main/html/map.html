@@ -9,29 +9,47 @@
     <script type="text/javascript"
       src="https://maps.googleapis.com/maps/api/js?sensor=false">
     </script>
+
+   
     <script type="text/javascript">
+     function getCallback(newurl, map) {
+		return function() {
+		console.log(newurl);
+                new google.maps.InfoWindow({
+                   content: "<a href='http://www.whitehouse.gov/sites/default/files/other/sotu_wordle.png' target=_blank><img src='"+newurl+"' width=300px></a>"
+                   }).open(map, this);
+               };
+	}
+        
         function initialize() {
+            var latlng = {mapData}
+  
+            var lat = latlng[0]['lat'][0];
+	    console.log(lat);
+            var lng = latlng[0]['lng'][0];
+	    console.log(lng);
+            var url = latlng[0]['wordcloudUrl'][0];
+console.log(url);
             var mapOptions = {
-              center: new google.maps.LatLng(-34.397, 150.644),
+              center: new google.maps.LatLng(lat, lng),
               zoom: 8
             };
 
             var map = new google.maps.Map(document.getElementById("map-canvas"),
                 mapOptions);
-
-            var marker = new google.maps.Marker({
-                position: new google.maps.LatLng(-35,151),
-                animation: google.maps.Animation.DROP,
-                map: map,
-                title:"Hello World!"
-            });
-
-            google.maps.event.addListener(marker, 'click', function() {
-                new google.maps.InfoWindow({
-                    content: "<a href='http://www.whitehouse.gov/sites/default/files/other/sotu_wordle.png' target=_blank><img src='http://www.whitehouse.gov/sites/default/files/other/sotu_wordle.png' width=300px></a>"
-                }).open(map, this);
-            });
-
+       
+            for(var i = 0; i < latlng.length; i++) {
+                lat = latlng[i]['lat'];
+                lng = latlng[i]['lng'];
+                var newurl = latlng[i]['wordcloudUrl'];
+                marker = new google.maps.Marker({
+                    position: new google.maps.LatLng(lat,lng),
+                    animation: google.maps.Animation.DROP,
+                   map: map,
+                    title:"Hello World!"
+                });
+                google.maps.event.addListener(marker, 'click', getCallback(newurl, map));
+            }
         }
         google.maps.event.addDomListener(window, 'load', initialize);
     </script>

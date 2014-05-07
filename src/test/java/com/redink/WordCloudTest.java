@@ -20,7 +20,7 @@ public class WordCloudTest {
 	public IWord[] toWords(String sentence) {
 		ArrayList<IWord> words = new ArrayList<IWord>();
 		for(String s : sentence.split("-")) {
-			words.add(new StanfordWord(s, 0, ETag.FW));
+			words.add(new StanfordWord(s, 0, "FW"));
 		}
         IWord[] w = new StanfordWord[words.size()];
         words.toArray(w);
@@ -60,6 +60,7 @@ public class WordCloudTest {
 	
 	@Test
 	public void testGetImageURL() {
+       System.out.println(w1.getURL());
 		assertTrue(w1.getURL()!=null);
 		assertFalse(w1.getURL().isEmpty());
 		assertTrue(w4.getURL()!=null);

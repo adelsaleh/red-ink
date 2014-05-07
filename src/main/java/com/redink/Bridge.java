@@ -6,6 +6,8 @@
 
 package com.redink;
 
+import java.util.Arrays;
+import org.json.JSONArray;
 /**
  *
  * @author bayan
@@ -16,8 +18,16 @@ public class Bridge {
             Client.b.openNovelView(n);
         }
 
-        public void loadMap(int radius, String[] tags) {
-            
+        public void loadMap(int radius, String tagsJson) {
+            System.out.println(tagsJson);
+            String[] tags;
+            JSONArray arr = new JSONArray(tagsJson);
+            tags = new String[arr.length()];
+            for(int i = 0; i < tags.length;i++) {
+                tags[i] = arr.getString(i);
+            }
+            System.out.println(Arrays.toString(tags));
+           Client.b.openMapView(radius, tags);
         }
     }
 //

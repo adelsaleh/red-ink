@@ -26,6 +26,7 @@ public class Novel {
       */
 	private IWord[] words;
     protected String rawText;
+    Location[] locations;
 
     static String readFile(String path, Charset encoding) throws IOException {
       byte[] encoded = Files.readAllBytes(Paths.get(path));
@@ -87,9 +88,9 @@ public class Novel {
             return new IWord[]{};
         }
         wordList.push(getPrecedingWords(indices.get(0), radius));
-        for(int i = 0; i < indices.size()-1; i++) {
-            int index = indices.get(i-1);
-            int nextIndex = indices.get(i+1);
+        for(int i = 0; i < indices.size()-2; i+=2) {
+            int index = indices.get(i);
+            int nextIndex = indices.get(i+2);
             if(nextIndex-index > radius) {
                 wordList.push(getSucceedingWords(index+sentence.length-1, radius));
                 wordList.push(getPrecedingWords(nextIndex, radius));
@@ -243,11 +244,15 @@ public class Novel {
         return succeeding;
     }
 
+    private Location[] getLocations() {
+        return locations;
+    }
 
+    
     public String toHTML(String locationClass) {
         StringBuilder sb = new StringBuilder("<p>");
         LocationExtractor ex = new LocationExtractor(this);
-        Location[] locations = ex.locations();
+        locations = ex.locations();
         LinkedList<Integer> indices = new LinkedList<Integer>();
         Comparator<Location> cmpLoc = new Comparator<Location>(){
             public int compare(Location l1, Location l2) {
@@ -268,7 +273,6 @@ public class Novel {
                 j++;
             }
         }
-        System.out.println(Arrays.toString(locs.toArray()));
         locations = new Location[locs.size()];
         locs.toArray(locations);
         for(Location loc : locations) {
