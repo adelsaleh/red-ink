@@ -1,18 +1,36 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-    <build><plugins>
-  <plugin>
-  <groupId>org.apache.maven.plugins</groupId>
-  <artifactId>maven-surefire-plugin</artifactId>
-  <configuration>
-    <forkMode>pertest</forkMode>
-    <argLine>-Xms512m -Xmx1g</argLine>
-    <testFailureIgnore>false</testFailureIgnore>
-    <skip>false</skip>
-  </configuration>
-  </plugin>
+<?xml version="1.0"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <forkMode>pertest</forkMode>
+          <argLine>-Xms512m -Xmx1g</argLine>
+          <testFailureIgnore>false</testFailureIgnore>
+          <skip>true</skip>
+        </configuration>
+      </plugin>
+      <plugin>
+        <artifactId>maven-assembly-plugin</artifactId>
+            <version>2.2.1</version>
+            <configuration>
+<!--            <descriptorRefs>
+                <descriptorRef>jar-with-dependencies</descriptorRef>
+            </descriptorRefs>-->
+            <descriptors> 
+              <descriptor>uber.xml</descriptor>
+            </descriptors>
+              <archive>
+                <manifest>
+                    <mainClass>com.redink.Client</mainClass>
+                </manifest>
+            </archive>
+        </configuration>
+      </plugin>
     </plugins>
-    </build>
+  </build>
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.redink</groupId>
   <artifactId>redink</artifactId>
@@ -34,10 +52,10 @@
       <scope>compile</scope>
     </dependency>
     <dependency>
-  	  <groupId>edu.stanford.nlp</groupId>
-	  <artifactId>stanford-corenlp</artifactId>
-  	  <version>3.3.1</version>
-	  <scope>compile</scope>
+      <groupId>edu.stanford.nlp</groupId>
+      <artifactId>stanford-corenlp</artifactId>
+      <version>3.3.1</version>
+      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>org.mcavallo</groupId>
