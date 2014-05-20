@@ -59,7 +59,7 @@ public class TestDescriptorFetcher {
 		assertTrue(words.get(0).getWord().equals("they"));
 		assertTrue(words.get(1).getWord().equals("'d"));
 		assertTrue(words.get(2).getWord().equals("be"));
-		df = new DescriptorFetcher(new ETag[]{ETag.NNP, ETag.CC});
+		df = new DescriptorFetcher(new String[]{"NNP", "CC"});
 		words = new ArrayList<IWord>();
 		for(IWord word : df.getUsefulWords(w)) {
 			words.add(word);
