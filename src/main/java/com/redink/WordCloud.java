@@ -3,9 +3,11 @@ import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
+import java.io.File;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.json.JSONException;
 import org.mcavallo.opencloud.Cloud;
 import org.mcavallo.opencloud.Tag;
 
@@ -44,10 +46,15 @@ public class WordCloud {
                             .field("textblock", sb.toString())
                             .asJson();
         } catch (UnirestException ex) {
-            Logger.getLogger(WordCloud.class.getName()).log(Level.SEVERE, null, ex);
+            url = new File("default.png").toURI().toURL().toString();
         }
         System.out.println(request.getBody());
-        url = request.getBody().getObject().getString("url");
+        try {
+            url = request.getBody().getObject().getString("url");
+        }catch(JSONException e) {
+            url = new File("default.png").toURI().toURL().toString();
+
+        }
     } 
 
     
